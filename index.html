@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบพื้นฐาน Commissioning Siemens G120</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --accent: #1D5C4A;
+    --accent-light: #E1F5EE;
+    --accent-mid: #0F6E56;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: #D8D5CF;
+    --radius: 12px;
+    --shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 3rem 1rem;
+    color: var(--text);
+  }
+
+  .wrapper { width: 100%; max-width: 620px; }
+
+  .header { text-align: center; margin-bottom: 2.5rem; }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .header p { font-size: 14px; color: var(--text-muted); font-weight: 300; }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem 2.5rem;
+    border: 1px solid var(--border);
+    margin-bottom: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group { margin-bottom: 1.4rem; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  label .req { color: #D85A30; margin-left: 2px; }
+
+  input[type=text], input[type=email], input[type=tel] {
+    width: 100%;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #FAFAF8;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+  }
+
+  input[type=text]:focus, input[type=email]:focus, input[type=tel]:focus {
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(29,92,74,0.12);
+  }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* Quiz styles */
+  .quiz-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.6rem 2rem;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-num {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+  }
+
+  .quiz-q {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .option:hover { border-color: var(--accent); background: var(--accent-light); }
+
+  .option input[type=radio] {
+    width: 16px; height: 16px;
+    min-width: 16px;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .submit-btn:hover { background: var(--accent-mid); }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { background: #9fb8b2; cursor: not-allowed; }
+
+  #toast {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Sarabun', sans-serif;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 999;
+    max-width: 320px;
+    pointer-events: none;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast.success { background: #1D5C4A; color: #fff; }
+  #toast.error { background: #A32D2D; color: #fff; }
+
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: -2px;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 1.5rem;
+    font-weight: 300;
+  }
+
+  @media (max-width: 480px) {
+    .card, .quiz-card { padding: 1.4rem; }
+    .row-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="header">
+    <div class="header-badge">🔧 แบบทดสอบออนไลน์</div>
+    <h1>แบบทดสอบพื้นฐาน Commissioning Siemens G120</h1>
+    <p>แบบทดสอบสำหรับวิศวกรไฟฟ้า หัวข้อ Commissioning and setting Siemens G120 ด้วย software STARTER</p>
+  </div>
+
+  <!-- ข้อมูลส่วนตัว -->
+  <div class="card">
+    <div class="section-title">ข้อมูลผู้เข้าสอบ</div>
+    <div class="row-2">
+      <div class="form-group">
+        <label>ชื่อ <span class="req">*</span></label>
+        <input type="text" id="firstname" placeholder="ชื่อจริง" required>
+      </div>
+      <div class="form-group">
+        <label>นามสกุล <span class="req">*</span></label>
+        <input type="text" id="lastname" placeholder="นามสกุล" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>อีเมล <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="example@email.com" required>
+    </div>
+    <div class="form-group">
+      <label>เบอร์โทรศัพท์ <span class="req">*</span></label>
+      <input type="tel" id="phone" placeholder="08X-XXX-XXXX" required>
+    </div>
+  </div>
+
+  <!-- ข้อสอบ -->
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 1</span>
+    <div class="quiz-q">ซอฟต์แวร์ STARTER ของ Siemens ออกแบบมาเพื่อใช้ทำหน้าที่ใดเป็นหลักในระบบขับเคลื่อน?</div>
+    <div class="options" id="q1">
+      <label class="option"><input type="radio" name="q1" value="A">เขียนโปรแกรมคำสั่งการทำงานให้กับ PLC</label>
+      <label class="option"><input type="radio" name="q1" value="B">ออกแบบวงจรไฟฟ้าและสร้างแบบแปลน</label>
+      <label class="option"><input type="radio" name="q1" value="C">ตั้งค่าพารามิเตอร์และทดสอบระบบ (Commissioning) อินเวอร์เตอร์</label>
+      <label class="option"><input type="radio" name="q1" value="D">วาดแบบโครงสร้างทางกลและ 3D CAD</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 2</span>
+    <div class="quiz-q">โครงสร้างฮาร์ดแวร์หลักของ Siemens G120 ที่แบ่งออกเป็น 2 ส่วนหลักคือข้อใด?</div>
+    <div class="options" id="q2">
+      <label class="option"><input type="radio" name="q2" value="A">CPU และ I/O Module</label>
+      <label class="option"><input type="radio" name="q2" value="B">HMI และ PLC</label>
+      <label class="option"><input type="radio" name="q2" value="C">Control Unit (CU) และ Power Module (PM)</label>
+      <label class="option"><input type="radio" name="q2" value="D">Rectifier และ Inverter</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 3</span>
+    <div class="quiz-q">ก่อนเริ่มการตั้งค่าใน STARTER วิศวกรจะทราบได้อย่างไรว่าคอมพิวเตอร์สามารถสื่อสารกับ G120 ได้แล้ว?</div>
+    <div class="options" id="q3">
+      <label class="option"><input type="radio" name="q3" value="A">ตรวจสอบจากปุ่มกดที่ตัวมอเตอร์</label>
+      <label class="option"><input type="radio" name="q3" value="B">ใช้ฟังก์ชัน Search for Accessible Nodes ในโหมด Go Online</label>
+      <label class="option"><input type="radio" name="q3" value="C">ถอดและเสียบสายไฟหลัก (Main power) ใหม่ 3 ครั้ง</label>
+      <label class="option"><input type="radio" name="q3" value="D">อัปเดตเฟิร์มแวร์ของ Windows ให้เป็นเวอร์ชันล่าสุด</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 4</span>
+    <div class="quiz-q">เครื่องมือใดใน STARTER ที่ช่วยให้การทำ Basic Commissioning ง่ายขึ้นโดยการแนะนำเป็นลำดับขั้นตอน?</div>
+    <div class="options" id="q4">
+      <label class="option"><input type="radio" name="q4" value="A">Expert List</label>
+      <label class="option"><input type="radio" name="q4" value="B">Configuration Wizard</label>
+      <label class="option"><input type="radio" name="q4" value="C">Control Panel</label>
+      <label class="option"><input type="radio" name="q4" value="D">Trace Function</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 5</span>
+    <div class="quiz-q">ข้อมูลใดต่อไปนี้ "ไม่จำเป็น" ต้องใช้ในขั้นตอนการกรอกข้อมูลมอเตอร์ (Motor Data) ในขณะทำ Commissioning?</div>
+    <div class="options" id="q5">
+      <label class="option"><input type="radio" name="q5" value="A">แรงดันพิกัดของมอเตอร์ (Rated voltage)</label>
+      <label class="option"><input type="radio" name="q5" value="B">กระแสพิกัดของมอเตอร์ (Rated current)</label>
+      <label class="option"><input type="radio" name="q5" value="C">อุณหภูมิห้องในขณะที่ทำการ Commissioning</label>
+      <label class="option"><input type="radio" name="q5" value="D">ความเร็วรอบพิกัดของมอเตอร์ (Rated speed)</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 6</span>
+    <div class="quiz-q">การทำคำสั่ง Motor Identification (Motor ID) มีวัตถุประสงค์เพื่ออะไร?</div>
+    <div class="options" id="q6">
+      <label class="option"><input type="radio" name="q6" value="A">เพื่อให้ไดรฟ์วัดและคำนวณหาค่าความต้านทานและความเหนี่ยวนำที่แท้จริงของมอเตอร์</label>
+      <label class="option"><input type="radio" name="q6" value="B">เพื่อลบข้อมูลเดิมที่เคยบันทึกไว้ในมอเตอร์ทิ้งทั้งหมด</label>
+      <label class="option"><input type="radio" name="q6" value="C">เพื่อทดสอบการหมุนกลับทิศทางว่าทำงานได้หรือไม่</label>
+      <label class="option"><input type="radio" name="q6" value="D">เพื่อส่งข้อมูลหมายเลขซีเรียลของมอเตอร์ไปเก็บบน Cloud</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 7</span>
+    <div class="quiz-q">เครื่องมือใดใน STARTER ที่ใช้ยึดสิทธิ์การควบคุม (Assume control priority) เพื่อสั่ง Start/Stop มอเตอร์จากหน้าจอคอมพิวเตอร์?</div>
+    <div class="options" id="q7">
+      <label class="option"><input type="radio" name="q7" value="A">Expert List</label>
+      <label class="option"><input type="radio" name="q7" value="B">Diagnostics</label>
+      <label class="option"><input type="radio" name="q7" value="C">Control Panel</label>
+      <label class="option"><input type="radio" name="q7" value="D">Alarms and Faults</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 8</span>
+    <div class="quiz-q">เหตุใดหลังจากตั้งค่าพารามิเตอร์เสร็จแล้ว จึงต้องกดปุ่มหรือใช้คำสั่ง Copy RAM to ROM?</div>
+    <div class="options" id="q8">
+      <label class="option"><input type="radio" name="q8" value="A">เพื่อรีเซ็ตค่าพารามิเตอร์ให้กลับไปเป็นค่าเริ่มต้นจากโรงงาน</label>
+      <label class="option"><input type="radio" name="q8" value="B">เพื่อบันทึกค่าที่ตั้งไว้ลงในหน่วยความจำถาวร ป้องกันข้อมูลหายเมื่อไฟดับ</label>
+      <label class="option"><input type="radio" name="q8" value="C">เพื่อส่งสำรองข้อมูลโปรเจกต์กลับมาเก็บไว้ในคอมพิวเตอร์ส่วนตัว</label>
+      <label class="option"><input type="radio" name="q8" value="D">เพื่อส่งข้อมูลพารามิเตอร์ไปยัง PLC อัตโนมัติ</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 9</span>
+    <div class="quiz-q">ในขั้นตอนการตั้งค่า Communication หากวิศวกรเลือก Standard Telegram หมายถึงการตั้งค่าอะไร?</div>
+    <div class="options" id="q9">
+      <label class="option"><input type="radio" name="q9" value="A">การกำหนดความยาวและชนิดของข้อมูลที่จะสื่อสารกันระหว่างไดรฟ์ (G120) กับ PLC</label>
+      <label class="option"><input type="radio" name="q9" value="B">การตั้งค่าให้ไดรฟ์สามารถส่งข้อความ SMS แจ้งเตือนเข้าโทรศัพท์มือถือได้</label>
+      <label class="option"><input type="radio" name="q9" value="C">การเลือกประเภทสายสัญญาณ Analog สำหรับควบคุมความเร็ว</label>
+      <label class="option"><input type="radio" name="q9" value="D">การอนุญาตให้โปรแกรม STARTER ส่งข้อผิดพลาดกลับไปยังเซอร์ฟเวอร์ของ Siemens</label>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <span class="quiz-num">ข้อ 10</span>
+    <div class="quiz-q">หากต้องการปรับเปลี่ยนพารามิเตอร์แบบเจาะจงที่ไม่ได้อยู่ใน Configuration Wizard (เช่น P1120 Ramp-up time) ต้องเข้าไปที่หน้าต่างใด?</div>
+    <div class="options" id="q10">
+      <label class="option"><input type="radio" name="q10" value="A">Topology</label>
+      <label class="option"><input type="radio" name="q10" value="B">Expert List</label>
+      <label class="option"><input type="radio" name="q10" value="C">Project Information</label>
+      <label class="option"><input type="radio" name="q10" value="D">Drive Navigator</label>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="card">
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">ส่งแบบทดสอบ</button>
+  </div>
+
+  <p class="footer-note">ข้อมูลของคุณจะถูกเก็บเป็นความลับ · jdee.ai</p>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBtryw7AEvgnGI36jIgG_5qpC6y7DBZQ8fBGgdSZ9nmnQK-pZA8LrHG_ttz-4AiBv73w/exec";
+
+  // Highlight selected option
+  document.querySelectorAll('.option input[type=radio]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const name = radio.name;
+      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.option').classList.remove('selected');
+      });
+      radio.closest('.option').classList.add('selected');
+    });
+  });
+
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 4500);
+  }
+
+  function getAnswer(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+
+  async function submitForm() {
+    const btn = document.getElementById('submitBtn');
+
+    const firstname = document.getElementById('firstname').value.trim();
+    const lastname  = document.getElementById('lastname').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const phone     = document.getElementById('phone').value.trim();
+
+    if (!firstname || !lastname || !email || !phone) {
+      showToast('กรุณากรอกข้อมูลผู้เข้าสอบให้ครบทุกช่อง', 'error');
+      return;
+    }
+
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailReg.test(email)) {
+      showToast('รูปแบบอีเมลไม่ถูกต้อง', 'error');
+      return;
+    }
+
+    // Check all questions answered
+    for (let i = 1; i <= 10; i++) {
+      if (!getAnswer('q' + i)) {
+        showToast(`กรุณาตอบข้อ ${i} ด้วยนะคะ`, 'error');
+        document.getElementById('q' + i).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>กำลังส่งข้อมูล...';
+
+    const payload = {
+      timestamp: new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }),
+      firstname, lastname, email, phone,
+      q1: getAnswer('q1'), q2: getAnswer('q2'), q3: getAnswer('q3'),
+      q4: getAnswer('q4'), q5: getAnswer('q5'), q6: getAnswer('q6'),
+      q7: getAnswer('q7'), q8: getAnswer('q8'), q9: getAnswer('q9'),
+      q10: getAnswer('q10')
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      showToast('✅ ส่งแบบทดสอบสำเร็จ! ขอบคุณค่ะ', 'success');
+      setTimeout(() => {
+        document.querySelectorAll('input[type=text], input[type=email], input[type=tel]').forEach(el => el.value = '');
+        document.querySelectorAll('input[type=radio]').forEach(el => { el.checked = false; });
+        document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1500);
+
+    } catch (err) {
+      showToast('❌ เกิดข้อผิดพลาด กรุณาลองอีกครั้ง', 'error');
+      console.error(err);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = 'ส่งแบบทดสอบ';
+  }
+</script>
+</body>
+</html>
