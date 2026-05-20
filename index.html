@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบฟอร์มกรอกข้อมูล</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --accent: #1D5C4A;
+    --accent-light: #E1F5EE;
+    --accent-mid: #0F6E56;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: #D8D5CF;
+    --radius: 12px;
+    --shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 3rem 1rem;
+    color: var(--text);
+  }
+
+  .wrapper {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem 2.5rem;
+    border: 1px solid var(--border);
+  }
+
+  .form-group {
+    margin-bottom: 1.4rem;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  label .req {
+    color: #D85A30;
+    margin-left: 2px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #FAFAF8;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(29,92,74,0.12);
+  }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .submit-btn:hover { background: var(--accent-mid); }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { background: #9fb8b2; cursor: not-allowed; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Sarabun', sans-serif;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 999;
+    max-width: 320px;
+    pointer-events: none;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast.success { background: #1D5C4A; color: #fff; }
+  #toast.error { background: #A32D2D; color: #fff; }
+
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: -2px;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 1.5rem;
+    font-weight: 300;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 1.5rem; }
+    .row-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="header">
+    <div class="header-badge">📋 แบบฟอร์มออนไลน์</div>
+    <h1>กรอกข้อมูลทั่วไป</h1>
+    <p>ข้อมูลจะถูกบันทึกใน Google Sheets โดยอัตโนมัติ</p>
+  </div>
+
+  <div class="card">
+    <div class="row-2">
+      <div class="form-group">
+        <label>ชื่อ <span class="req">*</span></label>
+        <input type="text" id="firstname" placeholder="ชื่อจริง" required>
+      </div>
+      <div class="form-group">
+        <label>นามสกุล <span class="req">*</span></label>
+        <input type="text" id="lastname" placeholder="นามสกุล" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>อีเมล <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="example@email.com" required>
+    </div>
+
+    <div class="form-group">
+      <label>เบอร์โทรศัพท์ <span class="req">*</span></label>
+      <input type="tel" id="phone" placeholder="08X-XXX-XXXX" required>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+      ส่งข้อมูล
+    </button>
+  </div>
+
+  <p class="footer-note">ข้อมูลของคุณจะถูกเก็บเป็นความลับ · jdee.ai</p>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ========================================================
+  // 🔧 ตั้งค่า: วาง URL ของ Google Apps Script ที่นี่
+  // ========================================================
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBtryw7AEvgnGI36jIgG_5qpC6y7DBZQ8fBGgdSZ9nmnQK-pZA8LrHG_ttz-4AiBv73w/exec";
+  // ========================================================
+
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 4000);
+  }
+
+  async function submitForm() {
+    const btn = document.getElementById('submitBtn');
+
+    const firstname = document.getElementById('firstname').value.trim();
+    const lastname  = document.getElementById('lastname').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const phone     = document.getElementById('phone').value.trim();
+
+    if (!firstname || !lastname || !email || !phone) {
+      showToast('กรุณากรอกข้อมูลให้ครบทุกช่อง', 'error');
+      return;
+    }
+
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailReg.test(email)) {
+      showToast('รูปแบบอีเมลไม่ถูกต้อง', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>กำลังส่งข้อมูล...';
+
+    const payload = {
+      timestamp: new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }),
+      firstname, lastname, email, phone
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      showToast('✅ ส่งข้อมูลสำเร็จ! ขอบคุณค่ะ', 'success');
+      document.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+
+    } catch (err) {
+      showToast('❌ เกิดข้อผิดพลาด กรุณาลองอีกครั้ง', 'error');
+      console.error(err);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = 'ส่งข้อมูล';
+  }
+</script>
+</body>
+</html>
