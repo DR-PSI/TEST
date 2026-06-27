@@ -155,6 +155,31 @@
             background: #ffffe0;
         }
 
+        /* Phase Severity Dropdown */
+        .phase-severity-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .phase-severity-select:focus {
+            outline: none;
+            border-color: #d97706;
+            background: #fef6e4;
+        }
+
+        .phase-severity-select:hover {
+            border-color: #d97706;
+        }
+
         /* Clickable Cell */
         .cell-input {
             cursor: pointer;
@@ -225,14 +250,29 @@
             display: inline-block;
         }
 
-        .checkbox.checked {
-            background: #000;
+        /* Severity Level Selection */
+        .phase-severity-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
-        .classification-item label {
-            font-size: 13px;
-            cursor: pointer;
-            user-select: none;
+        .phase-severity-select:focus {
+            outline: none;
+            border-color: #d97706;
+            background: #fef6e4;
+        }
+
+        .phase-severity-select:hover {
+            border-color: #d97706;
         }
 
         /* Notes Section */
@@ -792,29 +832,6 @@
             </tbody>
         </table>
 
-        <!-- Classification Section -->
-        <div class="classification-section">
-            <div class="classification-title">Classification of DGA Criteria Check</div>
-            <div class="classification-row">
-                <div class="classification-item">
-                    <div class="checkbox" id="classA" onclick="toggleClass('classA')"></div>
-                    <label onclick="toggleClass('classA')">☐ A</label>
-                </div>
-                <div class="classification-item">
-                    <div class="checkbox" id="classB" onclick="toggleClass('classB')"></div>
-                    <label onclick="toggleClass('classB')">☐ B</label>
-                </div>
-                <div class="classification-item">
-                    <div class="checkbox" id="classC" onclick="toggleClass('classC')"></div>
-                    <label onclick="toggleClass('classC')">☐ C</label>
-                </div>
-                <div class="classification-item">
-                    <div class="checkbox" id="classD" onclick="toggleClass('classD')"></div>
-                    <label onclick="toggleClass('classD')">☐ D</label>
-                </div>
-            </div>
-        </div>
-
         <!-- Notes Section -->
         <div class="notes-section">
             <strong>Note:</strong>
@@ -911,6 +928,41 @@
                 `;
                 tbody.appendChild(tr);
             });
+
+            // Add Phase Severity Row
+            const severityTr = document.createElement('tr');
+            severityTr.style.background = '#e8f4f8';
+            severityTr.innerHTML = `
+                <td colspan="3" style="font-weight: bold; text-align: left;">Phase Severity Level</td>
+                <td>
+                    <select id="phaseRLevel" class="phase-severity-select" onchange="setPhaseSeverity('R', this.value)">
+                        <option value="">-</option>
+                        <option value="A" ${phaseSeverity.R === 'A' ? 'selected' : ''}>A</option>
+                        <option value="B" ${phaseSeverity.R === 'B' ? 'selected' : ''}>B</option>
+                        <option value="C" ${phaseSeverity.R === 'C' ? 'selected' : ''}>C</option>
+                        <option value="D" ${phaseSeverity.R === 'D' ? 'selected' : ''}>D</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="phaseYLevel" class="phase-severity-select" onchange="setPhaseSeverity('Y', this.value)">
+                        <option value="">-</option>
+                        <option value="A" ${phaseSeverity.Y === 'A' ? 'selected' : ''}>A</option>
+                        <option value="B" ${phaseSeverity.Y === 'B' ? 'selected' : ''}>B</option>
+                        <option value="C" ${phaseSeverity.Y === 'C' ? 'selected' : ''}>C</option>
+                        <option value="D" ${phaseSeverity.Y === 'D' ? 'selected' : ''}>D</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="phaseBLevel" class="phase-severity-select" onchange="setPhaseSeverity('B', this.value)">
+                        <option value="">-</option>
+                        <option value="A" ${phaseSeverity.B === 'A' ? 'selected' : ''}>A</option>
+                        <option value="B" ${phaseSeverity.B === 'B' ? 'selected' : ''}>B</option>
+                        <option value="C" ${phaseSeverity.B === 'C' ? 'selected' : ''}>C</option>
+                        <option value="D" ${phaseSeverity.B === 'D' ? 'selected' : ''}>D</option>
+                    </select>
+                </td>
+            `;
+            tbody.appendChild(severityTr);
         }
 
         // Open cell modal
@@ -937,10 +989,15 @@
             currentCell = null;
         }
 
-        // Toggle classification
-        function toggleClass(id) {
-            const elem = document.getElementById(id);
-            elem.classList.toggle('checked');
+        let phaseSeverity = {
+            R: '',
+            Y: '',
+            B: ''
+        };
+
+        // Set phase severity
+        function setPhaseSeverity(phase, level) {
+            phaseSeverity[phase] = level;
         }
 
         // Save data
@@ -967,6 +1024,7 @@
                     serialNo: document.getElementById('testerSerialNo').value
                 },
                 gasValues: gasValues,
+                phaseSeverity: phaseSeverity,
                 comment: document.getElementById('commentText').value
             };
 
@@ -978,11 +1036,11 @@
         function clearForm() {
             if (confirm('Clear all data?')) {
                 gasValues = {};
+                phaseSeverity = { R: '', Y: '', B: '' };
                 document.querySelectorAll('input[type="text"], input[type="number"]').forEach(el => el.value = '');
                 document.getElementById('samplingDate').valueAsDate = new Date();
                 document.getElementById('testedDate').valueAsDate = new Date();
                 document.getElementById('commentText').value = '';
-                document.querySelectorAll('.checkbox').forEach(el => el.classList.remove('checked'));
                 renderGasTable();
             }
         }
