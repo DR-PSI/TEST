@@ -1257,6 +1257,13 @@
 
         // ===== FIREBASE INTEGRATION =====
         function saveToFirebase() {
+            // Wait for Firebase SDK to load
+            if (typeof firebase === 'undefined') {
+                showStatus('⏳ Loading Firebase... Please wait', 'warning');
+                setTimeout(saveToFirebase, 500);
+                return;
+            }
+
             try {
                 // Initialize Firebase if not already done
                 if (!firebase.apps.length) {
@@ -1450,8 +1457,8 @@
         }
     </script>
 
-    <!-- Firebase SDK from CDN -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+    <!-- Firebase SDK (Compat version - works with global code) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </body>
 </html>
