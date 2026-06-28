@@ -561,8 +561,26 @@
                 font-size: 12px;
             }
 
+            .data-entry-table thead tr {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0;
+                margin-bottom: 0;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+            }
+
+            .data-entry-table thead th {
+                padding: 12px;
+                border: 1px solid #d97706;
+                margin: 0;
+            }
+
             .data-entry-table tr {
-                display: block;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
                 margin-bottom: 20px;
                 border: 1px solid #e5e7eb;
                 border-radius: 6px;
@@ -570,18 +588,12 @@
             }
 
             .data-entry-table td {
-                display: block;
-                width: 100%;
+                display: flex;
+                flex-direction: column;
                 border: none;
-                padding: 0 0 15px 0;
-                margin-bottom: 15px;
-                border-bottom: 1px solid #e5e7eb;
-            }
-
-            .data-entry-table td:last-child {
-                border-bottom: none;
+                padding: 0;
                 margin-bottom: 0;
-                padding-bottom: 0;
+                border-bottom: none;
             }
 
             .data-entry-table input {
