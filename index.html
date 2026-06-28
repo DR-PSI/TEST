@@ -955,6 +955,8 @@
         <!-- Buttons -->
         <div class="button-group">
             <button class="btn-save" onclick="saveDGAData()">💾 Save Report</button>
+            <button class="btn-save" onclick="openGoogleSheetConfig()" style="background: linear-gradient(135deg, #4285f4 0%, #1967d2 100%);">📊 Google Sheets</button>
+            <button class="btn-save" onclick="exportToCSV()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📥 Export CSV</button>
             <button class="btn-print" onclick="window.print()">🖨️ Print</button>
             <button class="btn-clear" onclick="clearForm()">🗑️ Clear</button>
         </div>
@@ -975,6 +977,26 @@
                 <button class="btn-cancel" onclick="closeCellModal()">Cancel</button>
                 <button class="btn-save" onclick="saveCellValue()">Save</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Google Sheets Config Modal -->
+    <div id="googleSheetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📊 Google Sheets Integration</h3>
+            </div>
+            <div style="font-size: 13px; line-height: 1.6; margin-bottom: 15px; color: #666;">
+                <p><strong>Step 1:</strong> Paste your Google Apps Script URL below:</p>
+                <p style="font-size: 12px; margin-top: 5px; color: #999;">Find it: Google Sheet → Extensions → Apps Script → Deploy → New deployment</p>
+            </div>
+            <div class="modal-label">Web App URL:</div>
+            <input type="text" id="googleSheetUrl" class="modal-input" placeholder="https://script.google.com/macros/d/..." style="font-size: 12px;">
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeGoogleSheetModal()">Cancel</button>
+                <button class="btn-save" onclick="saveGoogleSheetUrl()">Save & Test</button>
+            </div>
+            <div id="testStatus" style="margin-top: 10px; font-size: 12px; text-align: center; display:none;"></div>
         </div>
     </div>
 
@@ -1200,6 +1222,253 @@
         // Initialize
         loadData();
         renderGasTable();
+
+        // ===== GOOGLE SHEETS INTEGRATION =====
+        let googleSheetUrl = localStorage.getItem('google_sheet_url') || 'https://script.google.com/macros/s/AKfycbwgHuBPWXJpRsFNa-mae0X9bj0HuHrXFrzeKnlxpVgd5UCFfeHVGPMI70BTBSo4iE_dXQ/exec';
+        
+        // Save default URL to localStorage on first load
+        if (!localStorage.getItem('google_sheet_url')) {
+            localStorage.setItem('google_sheet_url', googleSheetUrl);
+        }
+
+        function openGoogleSheetConfig() {
+            // Just send the data directly with embedded URL
+            sendToGoogleSheet();
+        }
+
+        function closeGoogleSheetModal() {
+            document.getElementById('googleSheetModal').classList.remove('show');
+            document.getElementById('testStatus').style.display = 'none';
+        }
+
+        function saveGoogleSheetUrl() {
+            const url = document.getElementById('googleSheetUrl').value.trim();
+            if (!url) {
+                alert('❌ Please enter a valid Google Apps Script URL');
+                return;
+            }
+            if (!url.includes('script.google.com')) {
+                alert('❌ Invalid URL. Must be from script.google.com');
+                return;
+            }
+
+            googleSheetUrl = url;
+            localStorage.setItem('google_sheet_url', url);
+
+            // Test connection
+            const testStatus = document.getElementById('testStatus');
+            testStatus.style.display = 'block';
+            testStatus.textContent = '⏳ Testing connection...';
+
+            sendToGoogleSheet(true).then(success => {
+                if (success) {
+                    testStatus.style.color = '#059669';
+                    testStatus.innerHTML = '✅ Connected! Your data will be saved.<br>You can close this dialog.';
+                } else {
+                    testStatus.style.color = '#dc2626';
+                    testStatus.textContent = '❌ Connection failed. Check your URL and try again.';
+                }
+            });
+        }
+
+        function sendToGoogleSheet(isTest = false) {
+            if (!googleSheetUrl) {
+                alert('❌ Google Sheet URL not configured. Click the Google Sheets button first.');
+                return Promise.resolve(false);
+            }
+
+            // Collect form data
+            const formData = {
+                circuitNo: document.getElementById('circuitNo').value,
+                mhShaftNo: document.getElementById('mhShaftNo').value,
+                position: document.getElementById('position').value,
+                weather: document.getElementById('weather').value,
+                temperature: document.getElementById('temperature').value,
+                humidity: document.getElementById('humidity').value,
+                samplingBy: document.getElementById('samplingBy').value,
+                samplingDate: document.getElementById('samplingDate').value,
+                testedDate: document.getElementById('testedDate').value,
+                testerStandard: document.getElementById('testerStandard').value,
+                manufacturer: document.getElementById('testerManufacturer').value,
+                serialNo: document.getElementById('testerSerialNo').value,
+                co2: gasValues['CO2'] || '',
+                co: gasValues['CO'] || '',
+                h2: gasValues['H2'] || '',
+                ch4: gasValues['CH4'] || '',
+                c2h2: gasValues['C2H2'] || '',
+                c2h4: gasValues['C2H4'] || '',
+                c2h6: gasValues['C2H6'] || '',
+                c3h6: gasValues['C3H6'] || '',
+                c3h8: gasValues['C3H8'] || '',
+                tcg: gasValues['TCG'] || '',
+                phaseR: phaseSeverity.R || '',
+                phaseY: phaseSeverity.Y || '',
+                phaseB: phaseSeverity.B || '',
+                notes: document.getElementById('notesText')?.value || '',
+                comments: document.getElementById('commentText').value
+            };
+
+            return fetch(googleSheetUrl, {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    if (!isTest) {
+                        closeGoogleSheetModal();
+                        showStatus('✅ Data sent to Google Sheet successfully!', 'success');
+                    }
+                    return true;
+                } else {
+                    throw new Error(result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (!isTest) {
+                    showStatus('❌ Failed to send data: ' + error.message, 'error');
+                }
+                return false;
+            });
+        }
+
+        // ===== CSV EXPORT =====
+        function exportToCSV() {
+            try {
+                // Get all saved reports from localStorage
+                const allData = [];
+                
+                // Get current form data
+                const currentData = {
+                    timestamp: new Date().toLocaleString('th-TH'),
+                    circuitNo: document.getElementById('circuitNo').value,
+                    mhShaftNo: document.getElementById('mhShaftNo').value,
+                    position: document.getElementById('position').value,
+                    weather: document.getElementById('weather').value,
+                    temperature: document.getElementById('temperature').value,
+                    humidity: document.getElementById('humidity').value,
+                    samplingBy: document.getElementById('samplingBy').value,
+                    samplingDate: document.getElementById('samplingDate').value,
+                    testedDate: document.getElementById('testedDate').value,
+                    testerStandard: document.getElementById('testerStandard').value,
+                    manufacturer: document.getElementById('testerManufacturer').value,
+                    serialNo: document.getElementById('testerSerialNo').value,
+                    co2: gasValues['CO2'] || '',
+                    co: gasValues['CO'] || '',
+                    h2: gasValues['H2'] || '',
+                    ch4: gasValues['CH4'] || '',
+                    c2h2: gasValues['C2H2'] || '',
+                    c2h4: gasValues['C2H4'] || '',
+                    c2h6: gasValues['C2H6'] || '',
+                    c3h6: gasValues['C3H6'] || '',
+                    c3h8: gasValues['C3H8'] || '',
+                    tcg: gasValues['TCG'] || '',
+                    phaseR: phaseSeverity.R || '',
+                    phaseY: phaseSeverity.Y || '',
+                    phaseB: phaseSeverity.B || '',
+                    notes: document.getElementById('notesText')?.value || '',
+                    comments: document.getElementById('commentText').value
+                };
+
+                // Check if form has any data
+                if (currentData.circuitNo || currentData.temperature || gasValues['CO2']) {
+                    allData.push(currentData);
+                }
+
+                // CSV Header
+                const headers = [
+                    'Timestamp',
+                    'Circuit No',
+                    'MH/Shaft No',
+                    'Position',
+                    'Weather',
+                    'Temperature (°C)',
+                    'Humidity (%)',
+                    'Sampling by',
+                    'Sampling Date',
+                    'Tested Date',
+                    'Tester Standard',
+                    'Manufacturer',
+                    'Serial No',
+                    'CO2 (ppm)',
+                    'CO (ppm)',
+                    'H2 (ppm)',
+                    'CH4 (ppm)',
+                    'C2H2 (ppm)',
+                    'C2H4 (ppm)',
+                    'C2H6 (ppm)',
+                    'C3H6 (ppm)',
+                    'C3H8 (ppm)',
+                    'TCG (ppm)',
+                    'Phase R Severity',
+                    'Phase Y Severity',
+                    'Phase B Severity',
+                    'Notes',
+                    'Comments'
+                ];
+
+                // Build CSV content
+                let csvContent = '"' + headers.join('","') + '"\n';
+
+                allData.forEach(row => {
+                    const values = [
+                        row.timestamp,
+                        row.circuitNo,
+                        row.mhShaftNo,
+                        row.position,
+                        row.weather,
+                        row.temperature,
+                        row.humidity,
+                        row.samplingBy,
+                        row.samplingDate,
+                        row.testedDate,
+                        row.testerStandard,
+                        row.manufacturer,
+                        row.serialNo,
+                        row.co2,
+                        row.co,
+                        row.h2,
+                        row.ch4,
+                        row.c2h2,
+                        row.c2h4,
+                        row.c2h6,
+                        row.c3h6,
+                        row.c3h8,
+                        row.tcg,
+                        row.phaseR,
+                        row.phaseY,
+                        row.phaseB,
+                        row.notes.replace(/"/g, '""'), // Escape quotes
+                        row.comments.replace(/"/g, '""')
+                    ];
+                    csvContent += '"' + values.join('","') + '"\n';
+                });
+
+                // Create blob and download
+                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                const filename = 'DGA_Report_' + new Date().toLocaleDateString('th-TH').replace(/\//g, '-') + '.csv';
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showStatus('✅ CSV file exported successfully!', 'success');
+
+            } catch (error) {
+                showStatus('❌ Export failed: ' + error.message, 'error');
+                console.error('Export error:', error);
+            }
+        }
     </script>
 </body>
 </html>
