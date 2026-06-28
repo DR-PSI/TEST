@@ -527,16 +527,21 @@
         /* ===== STATUS MESSAGE ===== */
         .status-message {
             padding: 14px 16px;
-            margin-bottom: 25px;
             border-radius: 6px;
             display: none;
             font-size: 14px;
             font-weight: 600;
-            animation: slideDown 0.3s ease;
+            animation: slideUp 0.3s ease;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            max-width: 400px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-10px); opacity: 0; }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
