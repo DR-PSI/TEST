@@ -955,7 +955,7 @@
         <!-- Buttons -->
         <div class="button-group">
             <button class="btn-save" onclick="saveDGAData()">💾 Save Report</button>
-            <button class="btn-save" onclick="openGoogleSheetConfig()" style="background: linear-gradient(135deg, #4285f4 0%, #1967d2 100%);">📊 Google Sheets</button>
+            <button class="btn-save" onclick="saveToFirebase()" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">🔥 Firebase</button>
             <button class="btn-save" onclick="exportToCSV()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📥 Export CSV</button>
             <button class="btn-print" onclick="window.print()">🖨️ Print</button>
             <button class="btn-clear" onclick="clearForm()">🗑️ Clear</button>
@@ -1223,112 +1223,111 @@
         loadData();
         renderGasTable();
 
-        // ===== GOOGLE SHEETS INTEGRATION =====
-        let googleSheetUrl = 'https://script.google.com/macros/s/AKfycbzQ3gwMjdOEiAhw34e1T2gduqh_EeAhaVmMKuDy0muzecv9A4jn1c22hpXs8D18th_xqw/exec';
+        // ===== FIREBASE CONFIG =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiMkXkeJc-vd8DwqhBsTWXYkToACkKrV8",
+            authDomain: "dga-cable.firebaseapp.com",
+            databaseURL: "https://dga-cable-default-rtdb.firebaseio.com",
+            projectId: "dga-cable",
+            storageBucket: "dga-cable.firebasestorage.app",
+            messagingSenderId: "503177033637",
+            appId: "1:503177033637:web:ce96ac23de4405ae51da4c",
+            measurementId: "G-G5Z1NKBL8J"
+        };
+
+        // Initialize Firebase (simplified - no modular imports needed for basic use)
+        let firebaseInitialized = false;
+        let firebaseDB = null;
 
         function openGoogleSheetConfig() {
-            // Just send the data directly with embedded URL
-            sendToGoogleSheet();
+            // Deprecated - not used
         }
 
         function closeGoogleSheetModal() {
-            document.getElementById('googleSheetModal').classList.remove('show');
-            document.getElementById('testStatus').style.display = 'none';
+            // Deprecated - not used
         }
 
         function saveGoogleSheetUrl() {
-            const url = document.getElementById('googleSheetUrl').value.trim();
-            if (!url) {
-                alert('❌ Please enter a valid Google Apps Script URL');
-                return;
-            }
-            if (!url.includes('script.google.com')) {
-                alert('❌ Invalid URL. Must be from script.google.com');
-                return;
-            }
-
-            googleSheetUrl = url;
-            localStorage.setItem('google_sheet_url', url);
-
-            // Test connection
-            const testStatus = document.getElementById('testStatus');
-            testStatus.style.display = 'block';
-            testStatus.textContent = '⏳ Testing connection...';
-
-            sendToGoogleSheet(true).then(success => {
-                if (success) {
-                    testStatus.style.color = '#059669';
-                    testStatus.innerHTML = '✅ Connected! Your data will be saved.<br>You can close this dialog.';
-                } else {
-                    testStatus.style.color = '#dc2626';
-                    testStatus.textContent = '❌ Connection failed. Check your URL and try again.';
-                }
-            });
+            // Deprecated - not used
         }
 
-        function sendToGoogleSheet(isTest = false) {
-            if (!googleSheetUrl) {
-                alert('❌ Google Sheet URL not configured. Click the Google Sheets button first.');
-                return Promise.resolve(false);
+        function sendToGoogleSheet() {
+            // Deprecated - not used
+        }
+
+        // ===== FIREBASE INTEGRATION =====
+        function saveToFirebase() {
+            // Add Firebase SDK dynamically
+            if (!window.firebase) {
+                const script = document.createElement('script');
+                script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+                script.onload = () => {
+                    const script2 = document.createElement('script');
+                    script2.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+                    script2.onload = initFirebaseAndSave;
+                    document.head.appendChild(script2);
+                };
+                document.head.appendChild(script);
+            } else {
+                initFirebaseAndSave();
             }
+        }
 
-            // Collect form data
-            const formData = {
-                circuitNo: document.getElementById('circuitNo').value,
-                mhShaftNo: document.getElementById('mhShaftNo').value,
-                position: document.getElementById('position').value,
-                weather: document.getElementById('weather').value,
-                temperature: document.getElementById('temperature').value,
-                humidity: document.getElementById('humidity').value,
-                samplingBy: document.getElementById('samplingBy').value,
-                samplingDate: document.getElementById('samplingDate').value,
-                testedDate: document.getElementById('testedDate').value,
-                testerStandard: document.getElementById('testerStandard').value,
-                manufacturer: document.getElementById('testerManufacturer').value,
-                serialNo: document.getElementById('testerSerialNo').value,
-                co2: gasValues['CO2'] || '',
-                co: gasValues['CO'] || '',
-                h2: gasValues['H2'] || '',
-                ch4: gasValues['CH4'] || '',
-                c2h2: gasValues['C2H2'] || '',
-                c2h4: gasValues['C2H4'] || '',
-                c2h6: gasValues['C2H6'] || '',
-                c3h6: gasValues['C3H6'] || '',
-                c3h8: gasValues['C3H8'] || '',
-                tcg: gasValues['TCG'] || '',
-                phaseR: phaseSeverity.R || '',
-                phaseY: phaseSeverity.Y || '',
-                phaseB: phaseSeverity.B || '',
-                notes: document.getElementById('notesText')?.value || '',
-                comments: document.getElementById('commentText').value
-            };
+        function initFirebaseAndSave() {
+            try {
+                if (!window.firebase.apps.length) {
+                    window.firebase.initializeApp(firebaseConfig);
+                }
+                const db = window.firebase.database();
 
-            return fetch(googleSheetUrl, {
-                method: 'POST',
-                body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    if (!isTest) {
-                        closeGoogleSheetModal();
-                        showStatus('✅ Data sent to Google Sheet successfully!', 'success');
-                    }
-                    return true;
-                } else {
-                    throw new Error(result.error);
-                }
-            })
-            .catch(error => {
+                // Collect form data
+                const formData = {
+                    timestamp: new Date().toLocaleString('th-TH'),
+                    circuitNo: document.getElementById('circuitNo').value,
+                    mhShaftNo: document.getElementById('mhShaftNo').value,
+                    position: document.getElementById('position').value,
+                    weather: document.getElementById('weather').value,
+                    temperature: document.getElementById('temperature').value,
+                    humidity: document.getElementById('humidity').value,
+                    samplingBy: document.getElementById('samplingBy').value,
+                    samplingDate: document.getElementById('samplingDate').value,
+                    testedDate: document.getElementById('testedDate').value,
+                    testerStandard: document.getElementById('testerStandard').value,
+                    manufacturer: document.getElementById('testerManufacturer').value,
+                    serialNo: document.getElementById('testerSerialNo').value,
+                    co2: gasValues['CO2'] || '',
+                    co: gasValues['CO'] || '',
+                    h2: gasValues['H2'] || '',
+                    ch4: gasValues['CH4'] || '',
+                    c2h2: gasValues['C2H2'] || '',
+                    c2h4: gasValues['C2H4'] || '',
+                    c2h6: gasValues['C2H6'] || '',
+                    c3h6: gasValues['C3H6'] || '',
+                    c3h8: gasValues['C3H8'] || '',
+                    tcg: gasValues['TCG'] || '',
+                    phaseR: phaseSeverity.R || '',
+                    phaseY: phaseSeverity.Y || '',
+                    phaseB: phaseSeverity.B || '',
+                    notes: document.getElementById('notesText')?.value || '',
+                    comments: document.getElementById('commentText').value
+                };
+
+                // Generate unique key
+                const key = new Date().getTime();
+                
+                // Save to Firebase
+                db.ref('dga_reports/' + key).set(formData).then(() => {
+                    showStatus('✅ Data saved to Firebase successfully!', 'success');
+                    console.log('Firebase Save Success:', formData);
+                }).catch(error => {
+                    showStatus('❌ Firebase Error: ' + error.message, 'error');
+                    console.error('Firebase Error:', error);
+                });
+
+            } catch (error) {
+                showStatus('❌ Error: ' + error.message, 'error');
                 console.error('Error:', error);
-                if (!isTest) {
-                    showStatus('❌ Failed to send data: ' + error.message, 'error');
-                }
-                return false;
-            });
+            }
         }
 
         // ===== CSV EXPORT =====
