@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#d97706">
-    <title>DGA Report for 230 kV Oil Filled Cable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance PM / CBM Form - MEA</title>
     <style>
         * {
             margin: 0;
@@ -14,813 +11,292 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #ff6b35;
+            --secondary: #004e89;
+            --light: #f7f7f7;
+            --dark: #1a1a1a;
+            --border: #e0e0e0;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
-            color: #333;
+            color: var(--dark);
             min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        /* ===== HEADER ===== */
+        /* Header */
         .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 20px;
             text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 4px solid #d97706;
-            padding-bottom: 25px;
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
         }
 
-        .logo {
-            width: 216px;
-            height: 216px;
-            margin: 0 auto 20px;
+        .header-content {
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #1f2937;
-        }
-
-        .header p {
-            font-size: 16px;
-            color: #6b7280;
-            font-weight: 500;
-        }
-
-        /* ===== SECTION TITLES ===== */
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1f2937;
-            margin: 30px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        /* ===== DATA ENTRY TABLE ===== */
-        .data-entry-table {
-            width: 100%;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid #e5e7eb;
-        }
-
-        .data-entry-table thead tr {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border: 1px solid #d97706;
-        }
-
-        .data-entry-table th {
-            background: linear-gradient(135deg, #fed7aa 0%, #fda857 100%);
-            color: #1f2937;
-            padding: 12px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 700;
-            border-right: 1px solid #d97706;
-        }
-
-        .data-entry-table th:last-child {
-            border-right: none;
-        }
-
-        .data-entry-table tbody tr {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border: 1px solid #e5e7eb;
-        }
-
-        .data-entry-table tbody tr td {
-            padding: 12px;
-            border-right: 1px solid #e5e7eb;
-            font-size: 13px;
-            background: #fafbfc;
-        }
-
-        .data-entry-table tbody tr td:last-child {
-            border-right: none;
-        }
-
-        .data-entry-table .label {
-            font-weight: 600;
-            width: 100%;
-            color: #4b5563;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .data-entry-table input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            appearance: none;
-            -webkit-appearance: none;
-            background: white;
-            min-height: 44px;
-        }
-
-        .data-entry-table input:focus {
-            outline: none;
-            border-color: #d97706;
-            background: #fffbf0;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
-        }
-
-        /* ===== GAS ANALYSIS TABLE ===== */
-        .gas-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid #e5e7eb;
-            font-size: 13px;
-        }
-
-        .gas-table th {
-            background: linear-gradient(135deg, #fed7aa 0%, #fda857 100%);
-            color: #1f2937;
-            padding: 12px;
-            border: 1px solid #d97706;
-            font-weight: 700;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .gas-table td {
-            padding: 12px;
-            border: 1px solid #e5e7eb;
-            text-align: center;
-            min-height: 44px;
-            background: #fafbfc;
-        }
-
-        .gas-table .gas-name {
-            text-align: left;
-            background: #f3f4f6;
-            font-weight: 600;
-            color: #374151;
-        }
-
-        .gas-table .gas-symbol {
-            font-weight: 700;
-            background: #f3f4f6;
-            color: #1f2937;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            line-height: 1.4;
-        }
-
-        .gas-table .tolerance {
-            background: #f3f4f6;
-            font-weight: 600;
-            color: #4b5563;
-        }
-
-        .gas-table .highlight-yellow {
-            background: #fef3c7;
-        }
-
-        /* ===== PHASE SEVERITY SELECT ===== */
-        .phase-severity-select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            background: white;
-            color: #1f2937;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            transition: all 0.3s ease;
-        }
-
-        .phase-severity-select:focus {
-            outline: none;
-            border-color: #d97706;
-            background: #fffbf0;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
-        }
-
-        .phase-severity-select:hover {
-            border-color: #d97706;
-        }
-
-        /* ===== CLICKABLE CELL ===== */
-        .cell-input {
-            cursor: pointer;
-            padding: 8px 12px;
-            background: white;
-            border: 2px solid #d1d5db;
-            border-radius: 6px;
-            min-width: 70px;
-            display: inline-block;
-            transition: all 0.2s;
-            font-weight: 600;
-            user-select: none;
-            min-height: 40px;
-            line-height: 24px;
-            color: #6b7280;
-        }
-
-        .cell-input:hover {
-            background: #fef6e4;
-            border-color: #d97706;
-            box-shadow: 0 2px 8px rgba(217, 119, 6, 0.15);
-        }
-
-        .cell-input:active {
-            background: #fed7aa;
-            transform: scale(0.96);
-        }
-
-        .cell-input.filled {
-            background: #dcfce7;
-            color: #166534;
-            border-color: #86efac;
-        }
-
-        .cell-input.empty {
-            color: #9ca3af;
-        }
-
-        /* ===== NOTES SECTION ===== */
-        .notes-section {
-            margin-bottom: 30px;
-            font-size: 13px;
-            line-height: 1.8;
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #d97706;
-        }
-
-        .notes-section strong {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #1f2937;
-        }
-
-        .notes-section > div > div strong {
-            display: inline;
-            margin: 0;
-        }
-
-        .notes-section > div > div {
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }
-
-        .notes-section ol {
-            margin-left: 20px;
-            color: #4b5563;
-        }
-
-        .notes-section li {
-            margin-bottom: 8px;
-        }
-
-        /* ===== COMMENT SECTION ===== */
-        .comment-section {
-            margin-bottom: 30px;
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .comment-section label {
-            display: block;
-            font-weight: 700;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #1f2937;
-        }
-
-        .comment-textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 100px;
-            appearance: none;
-            -webkit-appearance: none;
-            background: white;
-            transition: all 0.3s ease;
-        }
-
-        .comment-textarea:focus {
-            outline: none;
-            border-color: #d97706;
-            background: #fffbf0;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
-        }
-
-        /* ===== BUTTONS ===== */
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 30px;
-            justify-content: center;
-            padding-top: 25px;
-            border-top: 2px solid #e5e7eb;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
-        button {
-            padding: 12px 28px;
+        .logo {
+            width: 120px;
+            height: 120px;
+        }
+
+        .header-text h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header-text p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .header-text .subtitle {
             font-size: 14px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        /* Department Tree */
+        .department-tree {
+            margin-left: 20px;
+        }
+
+        .dept-item {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 3px solid var(--border);
+            position: relative;
+        }
+
+        .dept-item:before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 8px;
+            width: 9px;
+            height: 9px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .dept-name {
+            font-size: 16px;
             font-weight: 600;
-            border: none;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            padding: 10px;
+            background: var(--light);
             border-radius: 6px;
-            cursor: pointer;
+            display: inline-block;
+        }
+
+        /* Sub Department */
+        .subdept-list {
+            margin-top: 15px;
+            margin-left: 20px;
+            border-left: 2px solid var(--border);
+            padding-left: 15px;
+        }
+
+        .subdept-item {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
             transition: all 0.3s ease;
+        }
+
+        .subdept-item:hover {
+            background: var(--light);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.1);
+        }
+
+        .subdept-name {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
-            min-height: 44px;
         }
 
-        .btn-save {
-            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
-        }
-
-        .btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(217, 119, 6, 0.4);
-        }
-
-        .btn-save:active {
-            transform: translateY(0);
-        }
-
-        .btn-print {
-            background: linear-gradient(135deg, #4b5563 0%, #2d3748 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(75, 85, 99, 0.3);
-        }
-
-        .btn-print:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(75, 85, 99, 0.4);
-        }
-
-        .btn-clear {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-clear:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
-        }
-
-        /* ===== MODAL ===== */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.2s ease;
-        }
-
-        .modal.show {
+        .subdept-name .icon {
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 90%;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-header {
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 15px;
-        }
-
-        .modal-header h3 {
-            font-size: 22px;
-            color: #d97706;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .cell-info {
-            background: #fef6e4;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border-left: 4px solid #d97706;
-            font-size: 13px;
-            color: #b45309;
-            font-weight: 600;
-        }
-
-        .modal-label {
-            font-weight: 700;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #1f2937;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
-            margin-bottom: 25px;
-            appearance: none;
-            -webkit-appearance: none;
-            min-height: 44px;
-            transition: all 0.3s ease;
-        }
-
-        .modal-input:focus {
-            outline: none;
-            border-color: #d97706;
-            background: #fffbf0;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .modal-buttons button {
-            padding: 10px 20px;
-            font-size: 13px;
-        }
-
-        .btn-cancel {
-            background: #9ca3af;
+            background: var(--primary);
             color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        .btn-cancel:hover {
-            background: #6b7280;
+        .form-links {
+            margin-top: 10px;
+            padding-left: 28px;
         }
 
-        /* ===== STATUS MESSAGE ===== */
-        .status-message {
-            padding: 14px 16px;
-            margin-bottom: 25px;
+        .form-link {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 8px;
+        }
+
+        .form-link a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8555 100%);
+            color: white;
+            text-decoration: none;
             border-radius: 6px;
-            display: none;
-            font-size: 14px;
             font-weight: 600;
-            animation: slideDown 0.3s ease;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .form-link a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
         }
 
-        .status-message.success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-            display: block;
+        .form-link a .icon {
+            font-size: 16px;
         }
 
-        .status-message.error {
-            background: #fee2e2;
-            color: #7f1d1d;
-            border: 1px solid #fecaca;
-            display: block;
+        .coming-soon {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 8px;
+            padding: 10px 16px;
+            background: #e0e0e0;
+            color: #666;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        /* ===== PRINT STYLES ===== */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .button-group {
-                display: none;
-            }
-            .container {
-                box-shadow: none;
-                padding: 20px;
-            }
+        /* MEA Info */
+        .mea-info {
+            background: linear-gradient(135deg, var(--secondary) 0%, #003d6b 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
         }
 
-        /* ===== RESPONSIVE DESIGN ===== */
+        .mea-info h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .mea-info p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .mea-info .districts {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
             .header {
-                padding: 20px;
-                margin-bottom: 30px;
+                padding: 30px 15px;
             }
 
-            .header h1 {
-                font-size: 24px;
+            .header-content {
+                gap: 15px;
             }
 
             .logo {
                 width: 80px;
                 height: 80px;
-                font-size: 40px;
-                margin-bottom: 15px;
             }
 
-            .data-entry-table {
-                font-size: 12px;
+            .header-text h1 {
+                font-size: 24px;
             }
 
-            .data-entry-table thead tr {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0;
-                margin-bottom: 0;
-                border: none;
-                border-radius: 0;
-                padding: 0;
-            }
-
-            .data-entry-table thead th {
-                padding: 12px;
-                border: 1px solid #d97706;
-                margin: 0;
-            }
-
-            .data-entry-table tr {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0;
-                margin-bottom: 0;
-                border: 1px solid #e5e7eb;
-                border-radius: 0;
-                padding: 0;
-            }
-
-            .data-entry-table td {
-                display: flex;
-                flex-direction: column;
-                border: none;
-                border-right: 1px solid #e5e7eb;
-                padding: 12px;
-                margin-bottom: 0;
-            }
-
-            .data-entry-table td:last-child {
-                border-right: none;
-            }
-
-            .data-entry-table input {
-                font-size: 16px;
-                padding: 12px;
-            }
-
-            .gas-table {
-                font-size: 11px;
-            }
-
-            .gas-table th,
-            .gas-table td {
-                padding: 8px 4px;
-            }
-
-            .cell-input {
-                min-width: 45px;
-                padding: 5px 8px;
-                font-size: 11px;
-            }
-
-            .comment-textarea {
-                font-size: 16px;
-                padding: 12px;
-                min-height: 120px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-                padding: 14px;
-                font-size: 15px;
-                min-height: 48px;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 20px;
-            }
-
-            .modal-input {
-                font-size: 16px;
-                height: 44px;
-                padding: 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 15px;
-                border-radius: 8px;
-            }
-
-            .header {
-                padding: 15px;
-                margin-bottom: 20px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-                margin-bottom: 5px;
-            }
-
-            .header p {
+            .header-text p {
                 font-size: 14px;
             }
 
-            .logo {
-                width: 70px;
-                height: 70px;
-                font-size: 35px;
-                margin-bottom: 10px;
-            }
-
-            .section-title {
-                font-size: 16px;
-                margin: 20px 0 15px 0;
-            }
-
-            /* Data Entry Table - 2 columns for mobile */
-            .data-entry-table thead tr {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0;
-            }
-
-            .data-entry-table thead th {
-                padding: 12px;
-                font-size: 12px;
-                border-right: 1px solid #d97706;
-            }
-
-            .data-entry-table thead th:nth-child(2n) {
-                border-right: none;
-            }
-
-            .data-entry-table tbody tr {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0;
-                margin-bottom: 0;
-                border: 1px solid #e5e7eb;
-            }
-
-            .data-entry-table tbody tr td {
-                padding: 12px;
-                border-right: 1px solid #e5e7eb;
-                border-bottom: 1px solid #e5e7eb;
-            }
-
-            .data-entry-table tbody tr td:nth-child(2n) {
-                border-right: none;
-            }
-
-            .data-entry-table .label {
-                font-size: 12px;
-                margin-bottom: 4px;
-            }
-
-            .data-entry-table input {
-                font-size: 16px;
-                padding: 10px;
-                min-height: 40px;
-            }
-
-            /* Gas Table - Horizontal scroll */
-            .gas-table {
-                font-size: 11px;
-                overflow-x: auto;
-                display: block;
-            }
-
-            .gas-table th,
-            .gas-table td {
-                padding: 8px 6px;
-                min-width: 60px;
-            }
-
-            .cell-input {
-                min-width: 50px;
-                padding: 6px 4px;
-                font-size: 12px;
-                min-height: 36px;
-            }
-
-            .comment-textarea {
-                font-size: 16px;
-                padding: 12px;
-                min-height: 120px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-                padding: 14px;
-                font-size: 15px;
-                min-height: 50px;
-            }
-
-            .modal-content {
-                width: 95%;
+            .content {
                 padding: 20px;
             }
 
-            .modal-input {
-                font-size: 16px;
-                height: 44px;
-                padding: 12px;
+            .section-title {
+                font-size: 20px;
             }
 
-            .notes-section {
-                padding: 15px;
-                font-size: 12px;
+            .dept-name {
+                font-size: 15px;
             }
 
-            .notes-section strong {
+            .form-link a {
                 font-size: 13px;
+                padding: 8px 12px;
             }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .footer p {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -828,642 +304,142 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="logo">
-                <img src="data:image/jpeg;base64,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" alt="Metropolitan Electricity Authority Logo">
-            </div>
-            <h1>DGA Report for 230 kV Oil Filled Cable</h1>
-        </div>
-
-        <div id="statusMessage" class="status-message"></div>
-
-        <!-- Data Entry Section -->
-        <h2 class="section-title">📋 Cable & Metrological Data</h2>
-        <table class="data-entry-table">
-            <thead>
-                <tr>
-                    <th>Cable Data</th>
-                    <th>Metrological Data</th>
-                    <th>Sampling/Tested Data</th>
-                    <th>DGA Tester Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <label class="label">Circuit No.:</label>
-                        <input type="text" id="circuitNo" placeholder="e.g. HS">
-                    </td>
-                    <td>
-                        <label class="label">Weather:</label>
-                        <input type="text" id="weather" placeholder="">
-                    </td>
-                    <td>
-                        <label class="label">Sampling by:</label>
-                        <input type="text" id="samplingBy" placeholder="">
-                    </td>
-                    <td>
-                        <label class="label">Tester Standard:</label>
-                        <input type="text" id="testerStandard" placeholder="">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="label">MH/Shaft No.:</label>
-                        <input type="text" id="mhShaftNo" placeholder="">
-                    </td>
-                    <td>
-                        <label class="label">Temperature:</label>
-                        <input type="number" id="temperature" placeholder="" step="0.1">
-                        <span style="font-weight: bold;">°C</span>
-                    </td>
-                    <td>
-                        <label class="label">Sampling Date:</label>
-                        <input type="date" id="samplingDate">
-                    </td>
-                    <td>
-                        <label class="label">Manufacturer:</label>
-                        <input type="text" id="testerManufacturer" placeholder="">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="label">Position:</label>
-                        <input type="text" id="position" placeholder="">
-                    </td>
-                    <td>
-                        <label class="label">Humidity:</label>
-                        <input type="number" id="humidity" placeholder="" step="0.1" min="0" max="100">
-                        <span style="font-weight: bold;">(%)</span>
-                    </td>
-                    <td>
-                        <label class="label">Tested Date:</label>
-                        <input type="date" id="testedDate">
-                    </td>
-                    <td>
-                        <label class="label">Serial No.:</label>
-                        <input type="text" id="testerSerialNo" placeholder="">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Gas Analysis Table -->
-        <h2 class="section-title">🧪 Gas-in-Oil Analysis (ppm)</h2>
-
-        <table class="gas-table">
-            <thead>
-                <tr>
-                    <th colspan="3">Gas Details</th>
-                    <th colspan="3">Test Result</th>
-                </tr>
-                <tr>
-                    <th>Gas Name</th>
-                    <th>Symbol</th>
-                    <th>Tolerable Limit</th>
-                    <th>Phase R</th>
-                    <th>Phase Y</th>
-                    <th>Phase B</th>
-                </tr>
-            </thead>
-            <tbody id="gasTable">
-            </tbody>
-        </table>
-
-        <!-- Notes Section -->
-        <div class="notes-section">
-            <strong>📌 Important Notes:</strong>
-            <ol>
-                <li>Tr = Less than 1 ppm (In case of H₂ gas, less than 10 ppm)</li>
-                <li>TCG (Total Combustible Gas) = Sum of all gases except CO₂</li>
-            </ol>
-
-            <strong>🎯 Classification Levels & Recommended Actions:</strong>
-            <div style="margin-top: 12px;">
-                <div><strong>Level A:</strong> No action required for next 3 years</div>
-                <div><strong>Level B:</strong> Minor degradation suspected - Check 1 year later</div>
-                <div><strong>Level C:</strong> Repair work should be scheduled</div>
-                <div><strong>Level D:</strong> Urgent repair work required</div>
+            <div class="header-content">
+                <div style="text-align: center;">
+                    <svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="2"/>
+                        <path d="M100 30 L130 70 L120 80 L100 60 L80 80 L70 70 Z" fill="white" stroke="white" stroke-width="2"/>
+                        <circle cx="100" cy="120" r="40" fill="none" stroke="white" stroke-width="2"/>
+                        <line x1="100" y1="90" x2="100" y2="150" stroke="white" stroke-width="2"/>
+                        <line x1="70" y1="120" x2="130" y2="120" stroke="white" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Maintenance PM / CBM Form</h1>
+                    <p>ระบบจัดการแบบฟอร์มบำรุงรักษาระบบไฟฟ้า</p>
+                    <div class="subtitle">การไฟฟ้านครหลวง (MEA)</div>
+                </div>
             </div>
         </div>
 
-        <!-- Comment Section -->
-        <div class="comment-section">
-            <label>💬 Comments & Observations:</label>
-            <textarea id="commentText" class="comment-textarea" placeholder="Enter your observations and recommendations here..." rows="4"></textarea>
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Section 1: ฝ่ายบำรุงรักษาระบบไฟฟ้า -->
+            <div class="section">
+                <div class="section-title">📋 ฝ่ายบำรุงรักษาระบบไฟฟ้า</div>
+                <div class="department-tree">
+                    <!-- 1.1 กองบำรุงรักษาสายส่งใต้ดิน -->
+                    <div class="dept-item">
+                        <div class="dept-name">1.1 กองบำรุงรักษาสายส่งใต้ดิน</div>
+                        <div class="subdept-list">
+                            <div class="subdept-item">
+                                <div class="subdept-name">
+                                    <span class="icon">1.1.1</span>
+                                    DGA Report for 230 kV Oil Filled Cable
+                                </div>
+                                <div class="form-links">
+                                    <div class="form-link">
+                                        <a href="dga_report_form.html" target="_blank">
+                                            <span class="icon">🔗</span>
+                                            เปิดแบบฟอร์ม
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="subdept-item">
+                                <div class="subdept-name">
+                                    <span class="icon">1.1.2</span>
+                                    อื่นๆ
+                                </div>
+                                <div class="form-links">
+                                    <span class="coming-soon">📝 รอการอัปเดต</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.2 กองบำรุงรักษาสายส่งอากาศ -->
+                    <div class="dept-item">
+                        <div class="dept-name">1.2 กองบำรุงรักษาสายส่งอากาศ</div>
+                        <div class="subdept-list">
+                            <div class="subdept-item">
+                                <div class="subdept-name">
+                                    <span class="icon">📝</span>
+                                    แบบฟอร์มอื่นๆ
+                                </div>
+                                <div class="form-links">
+                                    <span class="coming-soon">📝 รอการอัปเดต</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.3 กองบำรุงรักษาอุปกรณ์สถานีย่อย -->
+                    <div class="dept-item">
+                        <div class="dept-name">1.3 กองบำรุงรักษาอุปกรณ์สถานีย่อย</div>
+                        <div class="subdept-list">
+                            <div class="subdept-item">
+                                <div class="subdept-name">
+                                    <span class="icon">📝</span>
+                                    แบบฟอร์มอื่นๆ
+                                </div>
+                                <div class="form-links">
+                                    <span class="coming-soon">📝 รอการอัปเดต</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.4 กองระบบป้องกันและควบคุมอัตโนมัติ 1 -->
+                    <div class="dept-item">
+                        <div class="dept-name">1.4 กองระบบป้องกันและควบคุมอัตโนมัติ 1</div>
+                        <div class="subdept-list">
+                            <div class="subdept-item">
+                                <div class="subdept-name">
+                                    <span class="icon">📝</span>
+                                    แบบฟอร์มอื่นๆ
+                                </div>
+                                <div class="form-links">
+                                    <span class="coming-soon">📝 รอการอัปเดต</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.5 กองระบบป้องกันและควบคุมอัตโนมัติ 2 -->
+                    <div class="dept-item">
+                        <div class="dept-name">1.5 กองระบบป้องกันและควบคุมอัตโนมัติ 2</div>
+                        <div class="subdept-list">
+                            <div class="subdept-item">
+                                <div class="subdept-name">
+                                    <span class="icon">📝</span>
+                                    แบบฟอร์มอื่นๆ
+                                </div>
+                                <div class="form-links">
+                                    <span class="coming-soon">📝 รอการอัปเดต</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEA Info -->
+            <div class="mea-info">
+                <h3>🏢 การไฟฟ้านครหลวง (Metropolitan Electricity Authority - MEA)</h3>
+                <p>แบบฟอร์มบำรุงรักษา PM/CBM (Preventive Maintenance / Condition Based Maintenance)</p>
+                <div class="districts">
+                    <strong>ครอบคลุม 18 เขตของ กรุงเทพมหานคร นนทบุรี และสมุทรปราการ</strong>
+                </div>
+            </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="button-group">
-            <button class="btn-save" onclick="saveDGAData()">💾 Save Report</button>
-            <button class="btn-save" onclick="openGoogleSheetConfig()" style="background: linear-gradient(135deg, #4285f4 0%, #1967d2 100%);">📊 Google Sheets</button>
-            <button class="btn-save" onclick="exportToCSV()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📥 Export CSV</button>
-            <button class="btn-print" onclick="window.print()">🖨️ Print</button>
-            <button class="btn-clear" onclick="clearForm()">🗑️ Clear</button>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div id="cellInputModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Enter Gas Value</h3>
-            </div>
-            <div class="cell-info">
-                <strong id="cellInfo">Gas - Phase R</strong>
-            </div>
-            <div class="modal-label">Value (ppm):</div>
-            <input type="number" id="cellValue" class="modal-input" placeholder="Enter value" step="0.01">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeCellModal()">Cancel</button>
-                <button class="btn-save" onclick="saveCellValue()">Save</button>
-            </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Maintenance PM / CBM Management System</strong></p>
+            <p>© 2026 Metropolitan Electricity Authority (MEA)</p>
+            <p>Version 1.0 | Last Updated: June 2026</p>
         </div>
     </div>
-
-    <!-- Google Sheets Config Modal -->
-    <div id="googleSheetModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>📊 Google Sheets Integration</h3>
-            </div>
-            <div style="font-size: 13px; line-height: 1.6; margin-bottom: 15px; color: #666;">
-                <p><strong>Step 1:</strong> Paste your Google Apps Script URL below:</p>
-                <p style="font-size: 12px; margin-top: 5px; color: #999;">Find it: Google Sheet → Extensions → Apps Script → Deploy → New deployment</p>
-            </div>
-            <div class="modal-label">Web App URL:</div>
-            <input type="text" id="googleSheetUrl" class="modal-input" placeholder="https://script.google.com/macros/d/..." style="font-size: 12px;">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeGoogleSheetModal()">Cancel</button>
-                <button class="btn-save" onclick="saveGoogleSheetUrl()">Save & Test</button>
-            </div>
-            <div id="testStatus" style="margin-top: 10px; font-size: 12px; text-align: center; display:none;"></div>
-        </div>
-    </div>
-
-    <script>
-        // Gas data
-        const gasData = [
-            { name: 'Carbon Dioxide', symbol: 'CO₂', limit: 1000 },
-            { name: 'Carbon Monoxide', symbol: 'CO', limit: 100 },
-            { name: 'Hydrogen', symbol: 'H₂', limit: 500 },
-            { name: 'Methane', symbol: 'CH₄', limit: 200 },
-            { name: 'Acetylene', symbol: 'C₂H₂', limit: 'Tr', highlight: true },
-            { name: 'Ethylene', symbol: 'C₂H₄', limit: 200 },
-            { name: 'Ethane', symbol: 'C₂H₆', limit: 200 },
-            { name: 'Propylene', symbol: 'C₃H₆', limit: 200 },
-            { name: 'Propane', symbol: 'C₃H₈', limit: 200 },
-            { name: 'Total Combustible Gas', symbol: 'TCG', limit: 1000, highlight: true }
-        ];
-
-        let gasValues = {};
-        let currentCell = null;
-        let phaseSeverity = { R: '', Y: '', B: '' };
-
-        // Initialize
-        document.getElementById('samplingDate').valueAsDate = new Date();
-        document.getElementById('testedDate').valueAsDate = new Date();
-
-        // Render gas table
-        function renderGasTable() {
-            const tbody = document.getElementById('gasTable');
-            tbody.innerHTML = '';
-
-            gasData.forEach((gas, index) => {
-                if (!gasValues[index]) {
-                    gasValues[index] = { r: '', y: '', b: '' };
-                }
-
-                const tr = document.createElement('tr');
-                if (gas.highlight) {
-                    tr.style.background = '#fef3c7';
-                }
-
-                tr.innerHTML = `
-                    <td class="gas-name">${gas.name}</td>
-                    <td class="gas-symbol">${gas.symbol}</td>
-                    <td class="tolerance">${gas.limit}</td>
-                    <td><span class="cell-input ${gasValues[index].r ? 'filled' : 'empty'}" onclick="openCellModal(${index}, 'r', '${gas.symbol}', 'R')">${gasValues[index].r || '-'}</span></td>
-                    <td><span class="cell-input ${gasValues[index].y ? 'filled' : 'empty'}" onclick="openCellModal(${index}, 'y', '${gas.symbol}', 'Y')">${gasValues[index].y || '-'}</span></td>
-                    <td><span class="cell-input ${gasValues[index].b ? 'filled' : 'empty'}" onclick="openCellModal(${index}, 'b', '${gas.symbol}', 'B')">${gasValues[index].b || '-'}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            // Add Phase Severity Row
-            const severityTr = document.createElement('tr');
-            severityTr.style.background = '#e0f2fe';
-            severityTr.innerHTML = `
-                <td colspan="3" style="font-weight: bold; text-align: left; background: #f3f4f6;">Phase Severity Level</td>
-                <td>
-                    <select id="phaseRLevel" class="phase-severity-select" onchange="setPhaseSeverity('R', this.value)">
-                        <option value="">-</option>
-                        <option value="A" ${phaseSeverity.R === 'A' ? 'selected' : ''}>A</option>
-                        <option value="B" ${phaseSeverity.R === 'B' ? 'selected' : ''}>B</option>
-                        <option value="C" ${phaseSeverity.R === 'C' ? 'selected' : ''}>C</option>
-                        <option value="D" ${phaseSeverity.R === 'D' ? 'selected' : ''}>D</option>
-                    </select>
-                </td>
-                <td>
-                    <select id="phaseYLevel" class="phase-severity-select" onchange="setPhaseSeverity('Y', this.value)">
-                        <option value="">-</option>
-                        <option value="A" ${phaseSeverity.Y === 'A' ? 'selected' : ''}>A</option>
-                        <option value="B" ${phaseSeverity.Y === 'B' ? 'selected' : ''}>B</option>
-                        <option value="C" ${phaseSeverity.Y === 'C' ? 'selected' : ''}>C</option>
-                        <option value="D" ${phaseSeverity.Y === 'D' ? 'selected' : ''}>D</option>
-                    </select>
-                </td>
-                <td>
-                    <select id="phaseBLevel" class="phase-severity-select" onchange="setPhaseSeverity('B', this.value)">
-                        <option value="">-</option>
-                        <option value="A" ${phaseSeverity.B === 'A' ? 'selected' : ''}>A</option>
-                        <option value="B" ${phaseSeverity.B === 'B' ? 'selected' : ''}>B</option>
-                        <option value="C" ${phaseSeverity.B === 'C' ? 'selected' : ''}>C</option>
-                        <option value="D" ${phaseSeverity.B === 'D' ? 'selected' : ''}>D</option>
-                    </select>
-                </td>
-            `;
-            tbody.appendChild(severityTr);
-        }
-
-        // Open cell modal
-        function openCellModal(index, phase, symbol, phaseLabel) {
-            currentCell = { index, phase };
-            document.getElementById('cellInfo').textContent = `${symbol} - Phase ${phaseLabel}`;
-            document.getElementById('cellValue').value = gasValues[index][phase] || '';
-            document.getElementById('cellValue').focus();
-            document.getElementById('cellInputModal').classList.add('show');
-        }
-
-        // Save cell value
-        function saveCellValue() {
-            if (!currentCell) return;
-            const value = document.getElementById('cellValue').value;
-            gasValues[currentCell.index][currentCell.phase] = value;
-            closeCellModal();
-            renderGasTable();
-        }
-
-        // Close modal
-        function closeCellModal() {
-            document.getElementById('cellInputModal').classList.remove('show');
-            currentCell = null;
-        }
-
-        // Set phase severity
-        function setPhaseSeverity(phase, level) {
-            phaseSeverity[phase] = level;
-        }
-
-        // Save data
-        function saveDGAData() {
-            const data = {
-                cable: {
-                    circuitNo: document.getElementById('circuitNo').value,
-                    mhShaftNo: document.getElementById('mhShaftNo').value,
-                    position: document.getElementById('position').value
-                },
-                metrological: {
-                    weather: document.getElementById('weather').value,
-                    temperature: document.getElementById('temperature').value,
-                    humidity: document.getElementById('humidity').value
-                },
-                sampling: {
-                    samplingBy: document.getElementById('samplingBy').value,
-                    samplingDate: document.getElementById('samplingDate').value,
-                    testedDate: document.getElementById('testedDate').value
-                },
-                tester: {
-                    standard: document.getElementById('testerStandard').value,
-                    manufacturer: document.getElementById('testerManufacturer').value,
-                    serialNo: document.getElementById('testerSerialNo').value
-                },
-                gasValues: gasValues,
-                phaseSeverity: phaseSeverity,
-                comment: document.getElementById('commentText').value
-            };
-
-            console.log('Report Data:', data);
-            
-            // Save to localStorage
-            try {
-                localStorage.setItem('dga_report_data', JSON.stringify(data));
-                showStatus('✅ Report saved successfully! (Data stored locally)', 'success');
-            } catch (e) {
-                showStatus('⚠️ Could not save to localStorage, but data logged to console', 'error');
-            }
-        }
-
-        // Clear form
-        function clearForm() {
-            if (confirm('Are you sure you want to clear all data?')) {
-                gasValues = {};
-                phaseSeverity = { R: '', Y: '', B: '' };
-                document.querySelectorAll('input[type="text"], input[type="number"]').forEach(el => el.value = '');
-                document.getElementById('samplingDate').valueAsDate = new Date();
-                document.getElementById('testedDate').valueAsDate = new Date();
-                document.getElementById('commentText').value = '';
-                localStorage.removeItem('dga_report_data');
-                renderGasTable();
-                showStatus('✅ All data cleared', 'success');
-            }
-        }
-
-        // Status message
-        function showStatus(msg, type) {
-            const div = document.getElementById('statusMessage');
-            div.textContent = msg;
-            div.className = `status-message ${type}`;
-            setTimeout(() => div.className = 'status-message', 4000);
-        }
-
-        // Keyboard support
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeCellModal();
-        });
-
-        // Load data on startup
-        function loadData() {
-            try {
-                const saved = localStorage.getItem('dga_report_data');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    // Load cable data
-                    document.getElementById('circuitNo').value = data.cable.circuitNo || '';
-                    document.getElementById('mhShaftNo').value = data.cable.mhShaftNo || '';
-                    document.getElementById('position').value = data.cable.position || '';
-                    
-                    // Load metrological data
-                    document.getElementById('weather').value = data.metrological.weather || '';
-                    document.getElementById('temperature').value = data.metrological.temperature || '';
-                    document.getElementById('humidity').value = data.metrological.humidity || '';
-                    
-                    // Load sampling data
-                    document.getElementById('samplingBy').value = data.sampling.samplingBy || '';
-                    document.getElementById('samplingDate').value = data.sampling.samplingDate || '';
-                    document.getElementById('testedDate').value = data.sampling.testedDate || '';
-                    
-                    // Load tester data
-                    document.getElementById('testerStandard').value = data.tester.standard || '';
-                    document.getElementById('testerManufacturer').value = data.tester.manufacturer || '';
-                    document.getElementById('testerSerialNo').value = data.tester.serialNo || '';
-                    
-                    // Load gas values
-                    gasValues = data.gasValues || {};
-                    phaseSeverity = data.phaseSeverity || { R: '', Y: '', B: '' };
-                    
-                    // Load comment
-                    document.getElementById('commentText').value = data.comment || '';
-                }
-            } catch (e) {
-                console.log('Could not load saved data');
-            }
-        }
-
-        // Initialize
-        loadData();
-        renderGasTable();
-
-        // ===== GOOGLE SHEETS INTEGRATION =====
-        let googleSheetUrl = 'https://script.google.com/macros/s/AKfycbyDRuD8tIObs07aWTiLpzR0vClcqEzJ1HCYfvM-FBME25YHNDl__U-sD5RPdksKjwfnJA/exec';
-
-        function openGoogleSheetConfig() {
-            // Just send the data directly with embedded URL
-            sendToGoogleSheet();
-        }
-
-        function closeGoogleSheetModal() {
-            document.getElementById('googleSheetModal').classList.remove('show');
-            document.getElementById('testStatus').style.display = 'none';
-        }
-
-        function saveGoogleSheetUrl() {
-            const url = document.getElementById('googleSheetUrl').value.trim();
-            if (!url) {
-                alert('❌ Please enter a valid Google Apps Script URL');
-                return;
-            }
-            if (!url.includes('script.google.com')) {
-                alert('❌ Invalid URL. Must be from script.google.com');
-                return;
-            }
-
-            googleSheetUrl = url;
-            localStorage.setItem('google_sheet_url', url);
-
-            // Test connection
-            const testStatus = document.getElementById('testStatus');
-            testStatus.style.display = 'block';
-            testStatus.textContent = '⏳ Testing connection...';
-
-            sendToGoogleSheet(true).then(success => {
-                if (success) {
-                    testStatus.style.color = '#059669';
-                    testStatus.innerHTML = '✅ Connected! Your data will be saved.<br>You can close this dialog.';
-                } else {
-                    testStatus.style.color = '#dc2626';
-                    testStatus.textContent = '❌ Connection failed. Check your URL and try again.';
-                }
-            });
-        }
-
-        function sendToGoogleSheet(isTest = false) {
-            if (!googleSheetUrl) {
-                alert('❌ Google Sheet URL not configured. Click the Google Sheets button first.');
-                return Promise.resolve(false);
-            }
-
-            // Collect form data
-            const formData = {
-                circuitNo: document.getElementById('circuitNo').value,
-                mhShaftNo: document.getElementById('mhShaftNo').value,
-                position: document.getElementById('position').value,
-                weather: document.getElementById('weather').value,
-                temperature: document.getElementById('temperature').value,
-                humidity: document.getElementById('humidity').value,
-                samplingBy: document.getElementById('samplingBy').value,
-                samplingDate: document.getElementById('samplingDate').value,
-                testedDate: document.getElementById('testedDate').value,
-                testerStandard: document.getElementById('testerStandard').value,
-                manufacturer: document.getElementById('testerManufacturer').value,
-                serialNo: document.getElementById('testerSerialNo').value,
-                co2: gasValues['CO2'] || '',
-                co: gasValues['CO'] || '',
-                h2: gasValues['H2'] || '',
-                ch4: gasValues['CH4'] || '',
-                c2h2: gasValues['C2H2'] || '',
-                c2h4: gasValues['C2H4'] || '',
-                c2h6: gasValues['C2H6'] || '',
-                c3h6: gasValues['C3H6'] || '',
-                c3h8: gasValues['C3H8'] || '',
-                tcg: gasValues['TCG'] || '',
-                phaseR: phaseSeverity.R || '',
-                phaseY: phaseSeverity.Y || '',
-                phaseB: phaseSeverity.B || '',
-                notes: document.getElementById('notesText')?.value || '',
-                comments: document.getElementById('commentText').value
-            };
-
-            return fetch(googleSheetUrl, {
-                method: 'POST',
-                body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    if (!isTest) {
-                        closeGoogleSheetModal();
-                        showStatus('✅ Data sent to Google Sheet successfully!', 'success');
-                    }
-                    return true;
-                } else {
-                    throw new Error(result.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                if (!isTest) {
-                    showStatus('❌ Failed to send data: ' + error.message, 'error');
-                }
-                return false;
-            });
-        }
-
-        // ===== CSV EXPORT =====
-        function exportToCSV() {
-            try {
-                // Get all saved reports from localStorage
-                const allData = [];
-                
-                // Get current form data
-                const currentData = {
-                    timestamp: new Date().toLocaleString('th-TH'),
-                    circuitNo: document.getElementById('circuitNo').value,
-                    mhShaftNo: document.getElementById('mhShaftNo').value,
-                    position: document.getElementById('position').value,
-                    weather: document.getElementById('weather').value,
-                    temperature: document.getElementById('temperature').value,
-                    humidity: document.getElementById('humidity').value,
-                    samplingBy: document.getElementById('samplingBy').value,
-                    samplingDate: document.getElementById('samplingDate').value,
-                    testedDate: document.getElementById('testedDate').value,
-                    testerStandard: document.getElementById('testerStandard').value,
-                    manufacturer: document.getElementById('testerManufacturer').value,
-                    serialNo: document.getElementById('testerSerialNo').value,
-                    co2: gasValues['CO2'] || '',
-                    co: gasValues['CO'] || '',
-                    h2: gasValues['H2'] || '',
-                    ch4: gasValues['CH4'] || '',
-                    c2h2: gasValues['C2H2'] || '',
-                    c2h4: gasValues['C2H4'] || '',
-                    c2h6: gasValues['C2H6'] || '',
-                    c3h6: gasValues['C3H6'] || '',
-                    c3h8: gasValues['C3H8'] || '',
-                    tcg: gasValues['TCG'] || '',
-                    phaseR: phaseSeverity.R || '',
-                    phaseY: phaseSeverity.Y || '',
-                    phaseB: phaseSeverity.B || '',
-                    notes: document.getElementById('notesText')?.value || '',
-                    comments: document.getElementById('commentText').value
-                };
-
-                // Check if form has any data
-                if (currentData.circuitNo || currentData.temperature || gasValues['CO2']) {
-                    allData.push(currentData);
-                }
-
-                // CSV Header
-                const headers = [
-                    'Timestamp',
-                    'Circuit No',
-                    'MH/Shaft No',
-                    'Position',
-                    'Weather',
-                    'Temperature (°C)',
-                    'Humidity (%)',
-                    'Sampling by',
-                    'Sampling Date',
-                    'Tested Date',
-                    'Tester Standard',
-                    'Manufacturer',
-                    'Serial No',
-                    'CO2 (ppm)',
-                    'CO (ppm)',
-                    'H2 (ppm)',
-                    'CH4 (ppm)',
-                    'C2H2 (ppm)',
-                    'C2H4 (ppm)',
-                    'C2H6 (ppm)',
-                    'C3H6 (ppm)',
-                    'C3H8 (ppm)',
-                    'TCG (ppm)',
-                    'Phase R Severity',
-                    'Phase Y Severity',
-                    'Phase B Severity',
-                    'Notes',
-                    'Comments'
-                ];
-
-                // Build CSV content
-                let csvContent = '"' + headers.join('","') + '"\n';
-
-                allData.forEach(row => {
-                    const values = [
-                        row.timestamp,
-                        row.circuitNo,
-                        row.mhShaftNo,
-                        row.position,
-                        row.weather,
-                        row.temperature,
-                        row.humidity,
-                        row.samplingBy,
-                        row.samplingDate,
-                        row.testedDate,
-                        row.testerStandard,
-                        row.manufacturer,
-                        row.serialNo,
-                        row.co2,
-                        row.co,
-                        row.h2,
-                        row.ch4,
-                        row.c2h2,
-                        row.c2h4,
-                        row.c2h6,
-                        row.c3h6,
-                        row.c3h8,
-                        row.tcg,
-                        row.phaseR,
-                        row.phaseY,
-                        row.phaseB,
-                        row.notes.replace(/"/g, '""'), // Escape quotes
-                        row.comments.replace(/"/g, '""')
-                    ];
-                    csvContent += '"' + values.join('","') + '"\n';
-                });
-
-                // Create blob and download
-                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                
-                const filename = 'DGA_Report_' + new Date().toLocaleDateString('th-TH').replace(/\//g, '-') + '.csv';
-                link.setAttribute('href', url);
-                link.setAttribute('download', filename);
-                link.style.visibility = 'hidden';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                showStatus('✅ CSV file exported successfully!', 'success');
-
-            } catch (error) {
-                showStatus('❌ Export failed: ' + error.message, 'error');
-                console.error('Export error:', error);
-            }
-        }
-    </script>
 </body>
 </html>
