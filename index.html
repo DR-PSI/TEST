@@ -716,17 +716,99 @@
                 margin: 20px 0 15px 0;
             }
 
-            .gas-table {
-                font-size: 10px;
+            /* Data Entry Table - 2 columns for mobile */
+            .data-entry-table thead tr {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .gas-table th,
-            .gas-table td {
-                padding: 6px 2px;
+            .data-entry-table thead th {
+                padding: 14px 8px;
+                font-size: 12px;
+            }
+
+            .data-entry-table tr {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0;
+                margin-bottom: 10px;
+                padding: 0;
+            }
+
+            .data-entry-table td {
+                padding: 12px;
+                border-right: 1px solid #e5e7eb;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .data-entry-table td:nth-child(2n) {
+                border-right: none;
+            }
+
+            .data-entry-table .label {
+                font-size: 12px;
+                margin-bottom: 4px;
             }
 
             .data-entry-table input {
                 font-size: 16px;
+                padding: 10px;
+                min-height: 40px;
+            }
+
+            /* Gas Table - Horizontal scroll */
+            .gas-table {
+                font-size: 11px;
+                overflow-x: auto;
+                display: block;
+            }
+
+            .gas-table th,
+            .gas-table td {
+                padding: 8px 6px;
+                min-width: 60px;
+            }
+
+            .cell-input {
+                min-width: 50px;
+                padding: 6px 4px;
+                font-size: 12px;
+                min-height: 36px;
+            }
+
+            .comment-textarea {
+                font-size: 16px;
+                padding: 12px;
+                min-height: 120px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+                padding: 14px;
+                font-size: 15px;
+                min-height: 50px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .modal-input {
+                font-size: 16px;
+                height: 44px;
+                padding: 12px;
+            }
+
+            .notes-section {
+                padding: 15px;
+                font-size: 12px;
+            }
+
+            .notes-section strong {
+                font-size: 13px;
             }
         }
     </style>
