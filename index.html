@@ -100,11 +100,22 @@
             border: 1px solid #d97706;
         }
 
-        .data-entry-table td {
-            padding: 12px;
+        .data-entry-table tbody tr {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
             border: 1px solid #e5e7eb;
+        }
+
+        .data-entry-table tbody tr td {
+            padding: 12px;
+            border-right: 1px solid #e5e7eb;
             font-size: 13px;
             background: #fafbfc;
+        }
+
+        .data-entry-table tbody tr td:last-child {
+            border-right: none;
         }
 
         .data-entry-table .label {
@@ -580,20 +591,24 @@
             .data-entry-table tr {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
-                gap: 15px;
-                margin-bottom: 20px;
+                gap: 0;
+                margin-bottom: 0;
                 border: 1px solid #e5e7eb;
-                border-radius: 6px;
-                padding: 15px;
+                border-radius: 0;
+                padding: 0;
             }
 
             .data-entry-table td {
                 display: flex;
                 flex-direction: column;
                 border: none;
-                padding: 0;
+                border-right: 1px solid #e5e7eb;
+                padding: 12px;
                 margin-bottom: 0;
-                border-bottom: none;
+            }
+
+            .data-entry-table td:last-child {
+                border-right: none;
             }
 
             .data-entry-table input {
