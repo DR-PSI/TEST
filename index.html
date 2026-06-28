@@ -83,21 +83,31 @@
         /* ===== DATA ENTRY TABLE ===== */
         .data-entry-table {
             width: 100%;
-            border-collapse: collapse;
             margin-bottom: 30px;
             border-radius: 8px;
             overflow: hidden;
             border: 2px solid #e5e7eb;
         }
 
+        .data-entry-table thead tr {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border: 1px solid #d97706;
+        }
+
         .data-entry-table th {
             background: linear-gradient(135deg, #fed7aa 0%, #fda857 100%);
             color: #1f2937;
-            padding: 16px 12px;
+            padding: 12px;
             text-align: left;
             font-size: 14px;
             font-weight: 700;
-            border: 1px solid #d97706;
+            border-right: 1px solid #d97706;
+        }
+
+        .data-entry-table th:last-child {
+            border-right: none;
         }
 
         .data-entry-table tbody tr {
@@ -120,7 +130,7 @@
 
         .data-entry-table .label {
             font-weight: 600;
-            width: 30%;
+            width: 100%;
             color: #4b5563;
             margin-bottom: 6px;
             display: block;
