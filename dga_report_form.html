@@ -955,7 +955,7 @@
         <!-- Buttons -->
         <div class="button-group">
             <button class="btn-save" onclick="saveDGAData()">💾 Save Report</button>
-            <button class="btn-save" onclick="saveToFirebase()" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">🔥 Firebase</button>
+            <button class="btn-save" onclick="saveToFirebase()" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">🗄️ Database</button>
             <button class="btn-save" onclick="exportToCSV()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📥 Export CSV</button>
             <button class="btn-print" onclick="window.print()">🖨️ Print</button>
             <button class="btn-clear" onclick="clearForm()">🗑️ Clear</button>
@@ -1147,9 +1147,9 @@
             // Save to localStorage
             try {
                 localStorage.setItem('dga_report_data', JSON.stringify(data));
-                showStatus('✅ Report saved successfully! (Data stored locally)', 'success');
+                showStatus('✅ บันทึกแล้ว! (Save Report)', 'success');
             } catch (e) {
-                showStatus('⚠️ Could not save to localStorage, but data logged to console', 'error');
+                showStatus('⚠️ ไม่สามารถบันทึกได้ แต่ข้อมูลถูกบันทึกใน console', 'error');
             }
         }
 
@@ -1309,10 +1309,10 @@
                 
                 // Save to Firebase
                 db.ref('dga_reports/' + key).set(formData).then(() => {
-                    showStatus('✅ Data saved to Firebase successfully!', 'success');
+                    showStatus('✅ บันทึกแล้ว! (Database)', 'success');
                     console.log('Firebase Save Success:', formData);
                 }).catch(error => {
-                    showStatus('❌ Firebase Error: ' + error.message, 'error');
+                    showStatus('❌ ผิดพลาด: ' + error.message, 'error');
                     console.error('Firebase Error:', error);
                 });
 
