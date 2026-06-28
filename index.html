@@ -1224,12 +1224,7 @@
         renderGasTable();
 
         // ===== GOOGLE SHEETS INTEGRATION =====
-        let googleSheetUrl = localStorage.getItem('google_sheet_url') || 'https://script.google.com/macros/s/AKfycbw9CGDAmqyp3S61TYWa2IT2gAYwRaatcouk_qfar85mHU8BaEnt5wtYAxVL86jQMl9_Yw/exec';
-        
-        // Save default URL to localStorage on first load
-        if (!localStorage.getItem('google_sheet_url')) {
-            localStorage.setItem('google_sheet_url', googleSheetUrl);
-        }
+        let googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwaoqYIT6nKpazdKKJbv8ZzgPYomoZpL0pDhdCTDoFxz1Ot4JiJ7Qo80KGTDgTfKUC22A/exec';
 
         function openGoogleSheetConfig() {
             // Just send the data directly with embedded URL
