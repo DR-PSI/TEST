@@ -238,11 +238,24 @@
             opacity: 0.95;
         }
 
-        .mea-info .districts {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        .mea-info .form-link a {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
             font-size: 14px;
+            width: fit-content;
+        }
+
+        .mea-info .form-link a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         /* Responsive */
@@ -430,6 +443,14 @@
                 <p>แบบฟอร์มบำรุงรักษา PM/CBM (Preventive Maintenance / Condition Based Maintenance)</p>
                 <div class="districts">
                     <strong>ครอบคลุม 18 เขตของ กรุงเทพมหานคร นนทบุรี และสมุทรปราการ</strong>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="form-link">
+                        <a href="substation_maintenance_form.html" target="_blank">
+                            <span class="icon">🔗</span>
+                            แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
