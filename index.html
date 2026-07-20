@@ -104,6 +104,37 @@ h1{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:23px;margin:0
 .toggle-btn:hover{color:var(--text);border-color:var(--b4);}
 .collapsible{margin-top:14px;}
 
+/* ===== KPI Hero — ธีมสว่างโดดเด่นสำหรับสรุปภาพรวม ===== */
+.kpi-hero{
+  position:relative; overflow:hidden; border-radius:22px; padding:30px 28px 28px;
+  background:linear-gradient(135deg,#ffffff 0%,#eef4ff 55%,#e6faf5 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.7) inset, 0 24px 60px -18px rgba(34,211,197,0.4), 0 0 50px rgba(63,124,246,0.18);
+}
+.kpi-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle, rgba(34,211,197,0.30), transparent 70%);pointer-events:none;}
+.kpi-hero::after{content:'';position:absolute;bottom:-70px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle, rgba(178,91,240,0.20), transparent 70%);pointer-events:none;}
+.kpi-hero-title{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:21px;color:#0f1222;margin:0 0 4px;position:relative;z-index:1;display:flex;align-items:center;gap:10px;}
+.kpi-hero-title .spark{font-size:18px;}
+.kpi-hero-sub{color:#5b6478;font-size:12.5px;margin:0 0 24px;position:relative;z-index:1;}
+.kpi-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;position:relative;z-index:1;}
+@media (max-width:640px){.kpi-hero-grid{grid-template-columns:1fr;}}
+.kpi-card{background:rgba(255,255,255,0.72);backdrop-filter:blur(8px);border-radius:18px;padding:22px 20px;border:1px solid rgba(255,255,255,0.85);box-shadow:0 10px 28px rgba(15,18,34,0.10);}
+.kpi-card-label{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 12px;border-radius:20px;margin-bottom:14px;color:#fff;}
+.kpi-card-label.fabor{background:linear-gradient(135deg,#3f7cf6,#22d3c5);}
+.kpi-card-label.fakhet{background:linear-gradient(135deg,#f2b542,#f2703a);}
+.kpi-ratio-row{display:flex;align-items:baseline;gap:10px;margin-bottom:2px;}
+.kpi-ratio{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:44px;line-height:1;color:#0f1222;}
+.kpi-ratio-unit{font-family:'JetBrains Mono',monospace;font-size:13px;color:#7a8296;}
+.kpi-ratio-label{font-size:11px;color:#7a8296;font-family:'JetBrains Mono',monospace;margin-bottom:18px;}
+.kpi-pct-bar{display:flex;height:28px;border-radius:9px;overflow:hidden;margin-bottom:8px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);}
+.kpi-pct-bar .seg-pm{background:linear-gradient(90deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11.5px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.kpi-pct-bar .seg-cm{background:linear-gradient(90deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11.5px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.kpi-pct-legend{display:flex;gap:16px;font-size:17.6px;color:#5b6478;margin-bottom:18px;}
+.kpi-pct-legend span{display:flex;align-items:center;gap:5px;}
+.kpi-pct-legend i{width:14px;height:14px;border-radius:3px;display:inline-block;}
+.kpi-chips{display:flex;gap:10px;flex-wrap:wrap;}
+.kpi-chip{background:rgba(15,18,34,0.05);border-radius:10px;padding:8px 14px;font-size:10.5px;color:#5b6478;font-family:'JetBrains Mono',monospace;}
+.kpi-chip b{display:block;color:#0f1222;font-size:15px;font-family:'Chakra Petch',sans-serif;margin-top:2px;}
+
 .chart-modal{display:none;position:fixed;inset:0;background:rgba(2,3,10,0.88);z-index:1000;align-items:center;justify-content:center;padding:28px;backdrop-filter:blur(2px);}
 .chart-modal.open{display:flex;}
 .chart-modal-inner{background:var(--panel-2);border:1px solid var(--panel-border);border-radius:16px;padding:28px;max-width:94vw;max-height:92vh;overflow:auto;position:relative;box-shadow:0 0 60px rgba(34,211,197,0.12);}
@@ -182,9 +213,7 @@ h1{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:23px;margin:0
   <p class="eyebrow"><span class="dot"></span>SUMMARY — KPI ภาพรวม</p>
   <h1 style="font-size:20px;">KPI ของการบำรุงรักษา</h1>
   <p class="subtitle">สรุปภาพรวมปี 2569 (2026) เทียบระหว่าง ฝบร. (รวมทุกแผนกบำรุงรักษา) และ ฟข. (รวมทุกไฟฟ้าเขต)</p>
-  <div style="overflow-x:auto;">
-  <table class="mini-table" id="kpiOverviewTable"></table>
-  </div>
+  <div class="kpi-hero" id="kpiHero"></div>
 
   <hr class="divider">
   <p class="eyebrow"><span class="dot"></span>STACKED BAR — %PM vs %CM</p>
@@ -948,9 +977,19 @@ function renderStackedPctChart(svgId, legendId, insightId, rows, opts){
 }
 
 renderStackedPctChart('pctBarDistrict', 'legendPctDistrict', 'insightPctDistrict', KPI_DATA, {
-  labelField:'n', pmField:'pm26', cmField:'cm26',
+  labelField:'code', pmField:'pm26', cmField:'cm26',
   title:'สัดส่วน %PM : %CM ปี 2569 รายเขต'
 });
+
+// ข้อความสรุปเฉพาะสำหรับกราฟรายเขต (เขียนโดยผู้ใช้งาน แทนข้อความที่คำนวณอัตโนมัติ)
+(function overrideDistrictPctInsight(){
+  const noData = KPI_DATA.filter(d=>(d.pm26+d.cm26)===0).map(d=>d.n);
+  let html = 'แม้ว่าสัดส่วนการบำรุงรักษาภาพรวมมีค่าที่ดี (4.17) แต่ด้านงาน PM ยังน้อยอยู่มากและไม่ครบทุกการไฟฟ้าเขต (ขาด 8 เขต) แนะนำควรเพิ่มการวางแผนบำรุงรักษาให้กับอุปกรณ์เพิ่มเติม';
+  if(noData.length){
+    html += `<br><span style="color:var(--text-mute);font-size:12px;">ไม่มีข้อมูล PM หรือ CM ในปีนี้: ${noData.join(', ')}</span>`;
+  }
+  document.getElementById('insightPctDistrict').innerHTML = html;
+})();
 
 /* ---------- ปุ่มพับ/กางกราฟเปรียบเทียบตัวเลขจริง (PM:CM ratio) ---------- */
 function toggleCollapse(id, btn){
@@ -1109,20 +1148,40 @@ function renderKpiOverviewTable(){
     o.cmPct = o.total>0 ? o.cm/o.total*100 : null;
   });
 
-  const fmtPct = (o, key, field) => `${n(o[key],2)}%(${n(o[field])})`;
+  function buildCard(o, labelClass, labelText){
+    const pmW = o.pmPct!==null ? Math.max(o.pmPct, 8) : 50;
+    const cmW = o.cmPct!==null ? Math.max(o.cmPct, 8) : 50;
+    return `
+    <div class="kpi-card">
+      <span class="kpi-card-label ${labelClass}">${labelText}</span>
+      <div class="kpi-ratio-row">
+        <span class="kpi-ratio">${o.ratio!==null?n(o.ratio,2):'-'}</span>
+        <span class="kpi-ratio-unit">PM : CM</span>
+      </div>
+      <div class="kpi-ratio-label">อัตราส่วนบำรุงรักษาเชิงป้องกัน ต่อ เชิงแก้ไข</div>
+      <div class="kpi-pct-bar">
+        <div class="seg-pm" style="width:${pmW}%;">${o.pmPct!==null?n(o.pmPct,2)+'%':'-'}</div>
+        <div class="seg-cm" style="width:${cmW}%;">${o.cmPct!==null?n(o.cmPct,2)+'%':'-'}</div>
+      </div>
+      <div class="kpi-pct-legend">
+        <span><i style="background:#22c55e"></i>%PM (${n(o.pm)})</span>
+        <span><i style="background:#f2703a"></i>%CM (${n(o.cm)})</span>
+      </div>
+      <div class="kpi-chips">
+        <div class="kpi-chip">Rework<b>0</b></div>
+        <div class="kpi-chip">PM Plan<b>Null</b></div>
+      </div>
+    </div>`;
+  }
 
-  const rows = [
-    ['PM : CM', n(fabor.ratio,2), n(fakhet.ratio,2)],
-    ['%PM', fmtPct(fabor,'pmPct','pm'), fmtPct(fakhet,'pmPct','pm')],
-    ['%CM', fmtPct(fabor,'cmPct','cm'), fmtPct(fakhet,'cmPct','cm')],
-    ['Rework', '0', '0'],
-    ['PM Plan', 'Null', 'Null'],
-  ];
-  let html = `<tr><th>หน่วย</th><th>ฝบร.</th><th>ฟข.</th></tr>`;
-  rows.forEach(([label, a, b])=>{
-    html += `<tr><td>${label}</td><td>${a}</td><td>${b}</td></tr>`;
-  });
-  document.getElementById('kpiOverviewTable').innerHTML = html;
+  const html = `
+    <p class="kpi-hero-title"><span class="spark">✦</span>KPI ของการบำรุงรักษา — ภาพรวมปี 2569 <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:#7a8296;margin-left:4px;">Update 17/7/69</span></p>
+    <p class="kpi-hero-sub">เปรียบเทียบ ฝบร. (รวมทุกแผนกบำรุงรักษา) กับ ฟข. (รวมทุกไฟฟ้าเขต)</p>
+    <div class="kpi-hero-grid">
+      ${buildCard(fabor, 'fabor', 'ฝบร.')}
+      ${buildCard(fakhet, 'fakhet', 'ฟข.')}
+    </div>`;
+  document.getElementById('kpiHero').innerHTML = html;
 }
 renderKpiOverviewTable();
 
